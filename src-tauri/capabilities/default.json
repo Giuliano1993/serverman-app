@@ -2,9 +2,17 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "core:default",
-    "shell:allow-open"
+    "shell:allow-open",
+    {
+      "identifier": "http:default",
+      "allow": [{ "url": "https://*.netlify.com" },{ "url": "https://*.vercel.com" },{ "url": "https://*.digitalocean.com" }],
+      "deny": [{ "url": "https://private.tauri.app" }]
+    }
+    
   ]
 }
