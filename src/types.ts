@@ -9,3 +9,12 @@ enum Provider {
 interface RequestError extends Error{
     status?: number
 }
+
+
+type Server = {
+    id: number
+}
+
+interface NetlifySite extends Server {
+
+}

@@ -30,7 +30,15 @@ const netlifyRequest = async (url: string, body={}, contentType = "application/j
 }
 
 
-export const listSites = async ()=>{
-    return await netlifyRequest("/api/v1/sites",{}, "application/json", "GET");
+export const listSites = async () => await netlifyRequest("/api/v1/sites",{}, "application/json", "GET");
+
+export const deleteSite = async(siteId: number) => await netlifyRequest(`/api/v1/sites/${siteId}`,{},"application/json", "DELETE")
+
+export const getNetlifyDeployKey = async () => await netlifyRequest("/api/v1/deploy_keys").then((res) => res['public_key']);
+
+// temporary for getting the project started, kesy won't stay in .env in released mode
+export const verifyNetlifyConfig = ()=> import.meta.env.VITE_netlifyToken && import.meta.env.VITE_netlifyUser;
+
+export const createSite = (sitename: string, repo:string|null = null, repoId: string|null = null, command: string = "npm run build", buildDirectory = "dist/", provider = "github")=>{
 
 }
