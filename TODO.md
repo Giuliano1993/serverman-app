@@ -1,0 +1,6 @@
+- [ ] Complete porting from CLI serverMan
+- [ ] DigitalOcean: create and save custom commands to run directly from application
+- [ ] aws
+  - [ ] basic operations: crete server, list server, delete server
+  - [ ] custom commands DO like
+  - [ ] create defaults
