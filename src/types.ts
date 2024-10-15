@@ -19,6 +19,10 @@ interface NetlifySite extends Server {
 
 }
 
+interface VercelProject extends Server{
+    name: string
+}
+
 type Repo = {
     "branch": string,
     "cmd": string,
