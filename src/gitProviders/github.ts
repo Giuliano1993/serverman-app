@@ -1,3 +1,4 @@
+import { fetch } from '@tauri-apps/plugin-http';
 const os = require('os')
 const fs = require('node:fs')
 const {exec} = require('child_process')
