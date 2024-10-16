@@ -90,6 +90,7 @@ export const createSite = async (sitename: string, repo:string|null = null, repo
         netlifyRequest(`/api/v1/${netlifyUser}/sites`,payload).then((res)=>{
             console.log("Site created")
             //return success message to the fonrtend
+            return res
         }).catch((err)=>{
             console.log("Error creating site");
             console.log(err);
@@ -99,3 +100,5 @@ export const createSite = async (sitename: string, repo:string|null = null, repo
 
     }
 }
+
+export type SiteCreated = Awaited<ReturnType<typeof createSite>>
