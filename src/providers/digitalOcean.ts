@@ -1,5 +1,7 @@
+
+const API_BASE_URL = "https://api.digitalocean.com/v2/"
 const buildBasicHeaders = ()=>{
-    const token = process.env.doAuthToken;
+    const {VITE_doAuthToken: token} = import.meta.env;
     return {
         'Content-Type':'application/json',
         'Authorization':'Bearer '+token
@@ -7,10 +9,10 @@ const buildBasicHeaders = ()=>{
 }
 
 export const createDroplet = async (name, size, image)=>{
-    configDotenv({path: __dirname + '/../../.env'});
+    
     const headers = buildBasicHeaders();
     const createDropletUrl = API_BASE_URL + "droplets";
-    const sshKeys = [process.env.sshKey]
+    const sshKeys = [import.meta.env.VITE_sshKey]
 
     const data = {
         "name":name,
@@ -24,21 +26,20 @@ export const createDroplet = async (name, size, image)=>{
         body: JSON.stringify(data)
     })
     .then(res=>res.json())
-    .then((res)=>res.droplet)
+    .then((res)=>res.droplet as Droplet)
     .catch((err)=>{
         console.log(err)
     })
 }
 
-
-export const getDroplet = async (dropletId)=>{
+export const getDroplet = async (dropletId: number|string)=>{
     const headers = buildBasicHeaders();
     const url = API_BASE_URL + `droplets/${dropletId}`;
     return await fetch(url,{
         headers: headers
     })
     .then(res=>res.json())
-    .then(res=>res['droplet'])
+    .then(res=>res['droplet'] as Droplet)
 }
 
 export const getDroplets = ()=>{

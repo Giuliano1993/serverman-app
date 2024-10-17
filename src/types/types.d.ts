@@ -23,6 +23,10 @@ interface VercelProject extends Server{
     name: string
 }
 
+interface Droplet extends Server{
+
+}
+
 type Repo = {
     "branch": string,
     "cmd": string,
@@ -34,3 +38,7 @@ type Repo = {
     "repo_id": string|null,
     "installation_id": string
 }
+
+export declare function createDroplet(name:string, size:string, image:string) : Droplet|void;
+export type SiteCreated = Awaited<ReturnType<typeof createDroplet>>
+export type DropletRetrived = Awaited<ReturnType<typeof getDroplet>>
