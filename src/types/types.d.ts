@@ -75,12 +75,13 @@ interface NetlifyInterface extends ProviderInterface {
     listSites: ()=>ReturnType<typeof this.netlifyRequest>,
     getNetlifyDeployKey: ()=>ReturnType<typeof this.netlifyRequest>,
     deleteSite: (siteId: string)=>ReturnType<typeof this.netlifyRequest>,
-    createSite: (sitename: string, repo:string|null, repoId: string|null, command: string, buildDirectory:string, provider:string, keyName:string)
+    createSite: (sitename: string, repo:string|null, repoId: string|null, command: string, buildDirectory:string, provider:string, keyName:string)=>ReturnType<typeof this.netlifyRequest>
 
 }
 
 interface VercelInterface extends ProviderInterface {
-    
+    projectList: ()=> any,
+    deleteApp: (project: VercelProject) => any
 }
 
 interface AWSInterface extends ProviderInterface{

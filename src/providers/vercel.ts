@@ -1,33 +1,37 @@
 import { fetch } from "@tauri-apps/plugin-http";
+import { VercelInterface } from "../types/types";
 
-
-export const projectList = async ()=>{
+const Vercel: VercelInterface = {
+  API_BASE_URL : "https://api.vercel.com/v9/",
+  buildBasicHeaders : ()=>{
     const {VITE_vercelToken: vercelToken} = import.meta.env;
-    const sites = await fetch("https://api.vercel.com/v9/projects", {
-      "headers": {
-        "Authorization": `Bearer ${vercelToken}`
-      },
-      "method": "get"
+    return  {
+      "Authorization": `Bearer ${vercelToken}`,
+      "Content-Type": "application/json"
+    }
+  },
+  projectList: async function(){
+    const sites = await fetch(this.API_BASE_URL + "projects", {
+      "headers": this.buildBasicHeaders(),
+      "method": "GET"
     }).then(response => response.json())
     .then(data => {
       return data.projects
     }) 
     
     return sites
+  },
+  deleteApp: async function(project){
+    return await fetch(this.API_BASE_URL + `projects/${project.id}`, {
+      "headers": this.buildBasicHeaders(),
+      "method": "delete"
+    }).then((response) => { if(response.status === 204){
+      return true
+    }}).catch((err)=>{
+      return false
+    })
+  }
 }
 
 
-export const deleteApp = async (project: VercelProject)=>{
-    const {VITE_vercelToken: vercelToken} = import.meta.env;
-
-    await fetch(`https://api.vercel.com/v9/projects/${project.id}`, {
-        "headers": {
-          "Authorization": `Bearer ${vercelToken}`
-        },
-        "method": "delete"
-      }).then((response) => { if(response.status === 204){
-        return true
-      }}).catch((err)=>{
-        return false
-      })
-} 
+export default Vercel;

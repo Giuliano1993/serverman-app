@@ -90,7 +90,7 @@ const Netlify: NetlifyInterface = {
             }
             payload["build_settings"] = payload['repo']
     
-            this.netlifyRequest(`/api/v1/${netlifyUser}/sites`,payload).then((res)=>{
+            return this.netlifyRequest(`/api/v1/${netlifyUser}/sites`,payload).then((res)=>{
                 console.log("Site created")
                 //return success message to the fonrtend
                 return res
