@@ -106,3 +106,4 @@ const Netlify: NetlifyInterface = {
     
 }
 
+export default Netlify;
