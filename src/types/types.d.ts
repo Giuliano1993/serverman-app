@@ -44,17 +44,18 @@ type ApiHeaders = {
     "Authorization":string
 }
 
+type DODistribution = {}
+
+type SSHKey = {}
+
+type DOSize = {}
+
 
 type ProviderInterface = {
     API_BASE_URL: string,
     buildBasicHeaders: ()=> ApiHeaders
 }
 
-type DODistribution = {}
-
-type SSHKey = {}
-
-type DOSize = {}
 
 interface DigitalOceanInterface extends ProviderInterface {
     createDroplet: (name: string, size:string, image:string) => Promise<any>
@@ -68,6 +69,13 @@ interface DigitalOceanInterface extends ProviderInterface {
 
 
 interface NetlifyInterface extends ProviderInterface {
+    buildBasicHeaders: (contentType: string)=>ApiHeaders,
+    netlifyRequest: (url: string, body?: any, contentType?: string, method?:string) =>Promise<any>,
+    verifyNetlifyConfig: boolean,
+    listSites: ()=>ReturnType<typeof this.netlifyRequest>,
+    getNetlifyDeployKey: ()=>ReturnType<typeof this.netlifyRequest>,
+    deleteSite: (siteId: string)=>ReturnType<typeof this.netlifyRequest>,
+    createSite: (sitename: string, repo:string|null, repoId: string|null, command: string, buildDirectory:string, provider:string, keyName:string)
 
 }
 
