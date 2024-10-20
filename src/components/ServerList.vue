@@ -34,11 +34,21 @@ onMounted( async ()=>{
 </script>
 
 <template>
-  <div>
+  <div class="servers-container">
     <h1> {{ props.type }} servers</h1>
-    <ServerListElement v-for="site in sites" :site="site" :key="site.id"></ServerListElement>
+    <div class="list-container">
+      <ServerListElement v-for="site in sites" :site="site" :key="site.id"></ServerListElement>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.servers-container{
+  height: 70vh;
+  .list-container{
+    height: 90%;
+    overflow-y: scroll;
+  }
+}
+
 </style>

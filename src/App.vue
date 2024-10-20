@@ -5,6 +5,10 @@ import ServerList from './components/ServerList.vue'
 </script>
 
 <template>
+  <div id="actions-container">
+    
+
+  </div>
   <div class="container flex gap-2 flex-row">
     <ServerList type="Netlify"></ServerList>
     <ServerList type="Vercel"></ServerList>
@@ -12,14 +16,6 @@ import ServerList from './components/ServerList.vue'
 </template>
 
 <style scoped>
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #249b73);
-}
-
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -34,6 +30,9 @@ import ServerList from './components/ServerList.vue'
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+#actions-container{
+  height: 30vh;
 }
 
 
