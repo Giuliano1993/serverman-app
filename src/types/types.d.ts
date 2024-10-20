@@ -88,4 +88,11 @@ interface AWSInterface extends ProviderInterface{
     
 }
 
+type GitHub = {
+    repoList: ()=>Promise<any>,
+    getDeployKey: (repo: string)=>Promise<any>,
+    createDeployKey: (repo:string, keyName:string)=>Promise<any>|false,
+    execShellCommandAsync: (cmd: string)=>Promise<any>
+}
+
 export declare function createDroplet(name:string, size:string, image:string) : Droplet|void;
