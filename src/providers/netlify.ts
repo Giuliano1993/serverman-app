@@ -1,6 +1,6 @@
 import { fetch } from '@tauri-apps/plugin-http';
-import { createDeployKey, getDeployKey, repoList as gitHubRepoList } from '../gitProviders/github';
-import { NetlifyInterface, Repo, RequestError } from '../types/types';
+import Github from '../gitProviders/github';
+import { ApiHeaders, NetlifyInterface, Repo } from '../types/types';
 
 const Netlify: NetlifyInterface = {
     API_BASE_URL: "https://api.netlify.com",
@@ -13,15 +13,14 @@ const Netlify: NetlifyInterface = {
         } 
     },
     netlifyRequest: async function(url: string, body={}, contentType = "application/json",method = "POST"){
-        const reqPars = {
+        const reqPars : {method: string, headers: ApiHeaders, body?: string} = {
             method,
             headers: this.buildBasicHeaders(contentType),
-            body: ''
+            //body: ''
         }
         if(method !== "GET"){
             reqPars['body'] = JSON.stringify(body);
         }
-
         return await fetch(this.API_BASE_URL + url, reqPars).then((res)=>{
             return new Promise((resolve,reject)=>{
                 if(!res.ok){
@@ -62,10 +61,10 @@ const Netlify: NetlifyInterface = {
         if(repo != null){
             let gitDeployKey
             try {
-                gitDeployKey = await getDeployKey(repo)
-                if(!gitDeployKey || getDeployKey.length === 0){
+                gitDeployKey = await Github.getDeployKey(repo)
+                if(!gitDeployKey || Github.getDeployKey.length === 0){
                     console.log("No deploy key found for this repo. Creating one now.");
-                    gitDeployKey = await createDeployKey(repo, keyName)
+                    gitDeployKey = await Github.createDeployKey(repo, keyName)
                 }else{
                     gitDeployKey = gitDeployKey[0]
                 }

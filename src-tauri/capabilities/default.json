@@ -10,9 +10,25 @@
     "shell:allow-open",
     {
       "identifier": "http:default",
-      "allow": [{ "url": "https://*.netlify.com" },{ "url": "https://*.vercel.com" },{ "url": "https://*.digitalocean.com" }],
-      "deny": [{ "url": "https://private.tauri.app" }]
-    }
-    
+      "allow": [
+        {
+          "url": "https://*.netlify.com"
+        },
+        {
+          "url": "https://*.vercel.com"
+        },
+        {
+          "url": "https://*.digitalocean.com"
+        }
+      ],
+      "deny": [
+        {
+          "url": "https://private.tauri.app"
+        }
+      ]
+    },
+    "os:default",
+    "fs:default",
+    "shell:default"
   ]
 }
