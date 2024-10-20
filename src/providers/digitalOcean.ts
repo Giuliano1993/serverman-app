@@ -4,6 +4,7 @@ import { DigitalOceanInterface, Droplet, Server } from "../types/types";
 
 const DigitalOcean : DigitalOceanInterface = {
     API_BASE_URL : "https://api.digitalocean.com/v2/",
+    verifyConfig: import.meta.env.VITE_doAuthToken,
     buildBasicHeaders : ()=>{
         const {VITE_doAuthToken: token} = import.meta.env;
         return {

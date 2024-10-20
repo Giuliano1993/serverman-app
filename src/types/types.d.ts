@@ -59,6 +59,7 @@ type DOSize = {}
 
 type ProviderInterface = {
     API_BASE_URL: string,
+    verifyConfig: boolean,
     buildBasicHeaders: ()=> ApiHeaders,
     convertServerToGeneric: (baseServer: any)=> Server
 }
@@ -79,7 +80,6 @@ interface NetlifyInterface extends ProviderInterface {
     buildBasicHeaders: (contentType: string)=>ApiHeaders,
     result_per_page: number,
     netlifyRequest: (url: string, body?: any, contentType?: string, method?:string) =>Promise<any>,
-    verifyNetlifyConfig: boolean,
     listSites: ()=>ReturnType<typeof this.netlifyRequest>,
     getNetlifyDeployKey: ()=>ReturnType<typeof this.netlifyRequest>,
     deleteSite: (siteId: string)=>ReturnType<typeof this.netlifyRequest>,

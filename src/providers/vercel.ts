@@ -3,6 +3,7 @@ import { Server, VercelInterface } from "../types/types";
 
 const Vercel: VercelInterface = {
   API_BASE_URL : "https://api.vercel.com/v9/",
+  verifyConfig: import.meta.env.VITE_vercelToken,
   buildBasicHeaders : ()=>{
     const {VITE_vercelToken: vercelToken} = import.meta.env;
     return  {
