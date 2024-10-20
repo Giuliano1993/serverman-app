@@ -12,6 +12,7 @@ import ServerList from './components/ServerList.vue'
   <div class="container flex gap-2 flex-row">
     <ServerList type="Netlify"></ServerList>
     <ServerList type="Vercel"></ServerList>
+    <ServerList type="digitalocean"></ServerList>
   </div>
 </template>
 

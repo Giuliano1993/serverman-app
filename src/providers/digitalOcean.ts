@@ -12,7 +12,10 @@ const DigitalOcean : DigitalOceanInterface = {
         }   
     },
     convertServerToGeneric: (baseServer)=>{
-        const s: Server = { id: 0}
+        const s: Server = { 
+            id: baseServer.id,
+            name: baseServer.name
+        }
         return s 
     },
     createDroplet: async function(name, size, image){
@@ -58,6 +61,7 @@ const DigitalOcean : DigitalOceanInterface = {
         .then(res=>res.json())
         .then((res)=>res['droplets'])
         .catch((err=>{
+            console.log('non va bene')
             console.log(err)
         }))
     },

@@ -5,6 +5,7 @@ import { ApiHeaders, NetlifyInterface, NetlifySite, Repo, Server } from '../type
 const Netlify: NetlifyInterface = {
     API_BASE_URL: "https://api.netlify.com",
     verifyNetlifyConfig: import.meta.env.VITE_netlifyToken && import.meta.env.VITE_netlifyUser,
+    result_per_page: 10,
     buildBasicHeaders: (contentTYpe = "application/json")=>{
         const { VITE_netlifyToken : token } = import.meta.env
         return {
