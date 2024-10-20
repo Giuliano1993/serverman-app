@@ -1,6 +1,6 @@
 import { fetch } from '@tauri-apps/plugin-http';
 import Github from '../gitProviders/github';
-import { ApiHeaders, NetlifyInterface, Repo } from '../types/types';
+import { ApiHeaders, NetlifyInterface, NetlifySite, Repo, Server } from '../types/types';
 
 const Netlify: NetlifyInterface = {
     API_BASE_URL: "https://api.netlify.com",
@@ -11,6 +11,16 @@ const Netlify: NetlifyInterface = {
             'Content-Type':contentTYpe,
             'Authorization':'Bearer '+token
         } 
+    },
+    convertServerToGeneric: (baseServer)=>{
+        const s: Server = { 
+            id: baseServer.id,
+            name: baseServer.name,
+            admin_url: baseServer.admin_url,
+            public_url: baseServer.ssl_url,
+            preview_image_url: baseServer.screenshot_url
+        }
+        return s 
     },
     netlifyRequest: async function(url: string, body={}, contentType = "application/json",method = "POST"){
         const reqPars : {method: string, headers: ApiHeaders, body?: string} = {

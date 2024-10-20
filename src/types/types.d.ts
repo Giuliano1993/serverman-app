@@ -1,4 +1,4 @@
-enum Provider {
+export enum Provider {
     NETLIFY = 'netlify',
     DIGITALOCEAN = 'digitalocean',
     VERCEL = 'vercel',
@@ -11,11 +11,17 @@ interface RequestError extends Error{
 }
 
 
-type Server = {
-    id: number
+export type Server = {
+    id: number,
+    name?: string, 
+    public_url?: string,
+    admin_url?: string,
+    ip?: string,
+    repo?: string,
+    preview_image_url?: string
 }
 
-interface NetlifySite extends Server {
+export interface NetlifySite extends Server {
 
 }
 
@@ -53,7 +59,8 @@ type DOSize = {}
 
 type ProviderInterface = {
     API_BASE_URL: string,
-    buildBasicHeaders: ()=> ApiHeaders
+    buildBasicHeaders: ()=> ApiHeaders,
+    convertServerToGeneric: (baseServer: any)=> Server
 }
 
 

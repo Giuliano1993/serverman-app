@@ -1,4 +1,4 @@
-import { DigitalOceanInterface, Droplet } from "../types/types";
+import { DigitalOceanInterface, Droplet, Server } from "../types/types";
 
 
 
@@ -10,6 +10,10 @@ const DigitalOcean : DigitalOceanInterface = {
             'Content-Type':'application/json',
             'Authorization':'Bearer '+token
         }   
+    },
+    convertServerToGeneric: (baseServer)=>{
+        const s: Server = { id: 0}
+        return s 
     },
     createDroplet: async function(name, size, image){
     

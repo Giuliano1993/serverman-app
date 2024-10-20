@@ -1,5 +1,5 @@
 import { fetch } from "@tauri-apps/plugin-http";
-import { VercelInterface } from "../types/types";
+import { Server, VercelInterface } from "../types/types";
 
 const Vercel: VercelInterface = {
   API_BASE_URL : "https://api.vercel.com/v9/",
@@ -10,12 +10,22 @@ const Vercel: VercelInterface = {
       "Content-Type": "application/json"
     }
   },
+  convertServerToGeneric: (baseServer)=>{
+    const s: Server = { 
+      id: baseServer.id,
+      name: baseServer.name,
+      public_url: baseServer.targets.production.url,
+      repo: baseServer?.link
+    }
+    return s 
+},
   projectList: async function(){
     const sites = await fetch(this.API_BASE_URL + "projects", {
       "headers": this.buildBasicHeaders(),
       "method": "GET"
     }).then(response => response.json())
     .then(data => {
+      console.log(data)
       return data.projects
     }) 
     
