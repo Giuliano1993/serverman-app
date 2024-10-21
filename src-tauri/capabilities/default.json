@@ -31,6 +31,8 @@
     "fs:default",
     "fs:allow-appdata-read",
     "fs:allow-appdata-write",
+    "fs:allow-home-read",
+    "fs:allow-home-write",
     "shell:default"
   ]
 }
