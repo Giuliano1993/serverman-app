@@ -33,6 +33,7 @@
     "fs:allow-appdata-write",
     "fs:allow-home-read",
     "fs:allow-home-write",
-    "shell:default"
+    "shell:default",
+    "stronghold:default"
   ]
 }
