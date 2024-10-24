@@ -34,6 +34,7 @@
     "fs:allow-home-read",
     "fs:allow-home-write",
     "shell:default",
-    "stronghold:default"
+    "stronghold:default",
+    "stronghold:allow-remove-store-record"
   ]
 }

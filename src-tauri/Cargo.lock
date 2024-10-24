@@ -3708,6 +3708,7 @@ dependencies = [
 name = "serverman-app"
 version = "0.1.0"
 dependencies = [
+ "rust-argon2 2.1.0",
  "serde",
  "serde_json",
  "tauri",

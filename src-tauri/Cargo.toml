@@ -26,4 +26,5 @@ tauri-plugin-http = "2"
 tauri-plugin-os = "2"
 tauri-plugin-fs = "2"
 tauri-plugin-stronghold = "2"
+rust-argon2 = "2.1"
 
