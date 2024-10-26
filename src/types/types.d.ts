@@ -3,6 +3,7 @@ export enum Provider {
     DIGITALOCEAN = 'digitalocean',
     VERCEL = 'vercel',
     AWS = 'aws',
+    HETZNER = "hetzner"
 
 }
 
@@ -11,25 +12,35 @@ interface RequestError extends Error{
 }
 
 
-export type Server = {
+export type DeployInstance = {
     id: number,
-    name?: string, 
+    name?: string,
+}
+
+export interface Server extends DeployInstance  {
+    ip?: string,
+}
+
+export interface StaticSiteInstance extends DeployInstance {
     public_url?: string,
     admin_url?: string,
-    ip?: string,
     repo?: string,
     preview_image_url?: string
 }
 
-export interface NetlifySite extends Server {
+export interface NetlifySite extends StaticSiteInstance {
 
 }
 
-interface VercelProject extends Server{
+interface VercelProject extends StaticSiteInstance{
     name: string
 }
 
 export interface Droplet extends Server{
+
+}
+
+export interface HetznerServer extends Server{
 
 }
 
@@ -94,6 +105,10 @@ interface VercelInterface extends ProviderInterface {
 
 interface AWSInterface extends ProviderInterface{
     
+}
+
+interface HetznerInterface extends ProviderInterface{
+    serverList: ()=>Promise<Server[]|Error>
 }
 
 type GitHub = {

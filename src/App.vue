@@ -53,6 +53,7 @@ const triggerShowModal = ()=>{
     <ServerList type="Netlify"></ServerList>
     <ServerList type="Vercel"></ServerList>
     <ServerList type="digitalocean"></ServerList>
+    <ServerList type="hetzner"></ServerList>
   </div>
 </template>
 

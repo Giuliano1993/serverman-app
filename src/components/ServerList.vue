@@ -6,6 +6,7 @@ import ServerListElement from './ServerListElement.vue'
 import Vercel from '../providers/vercel.ts';
 import DigitalOcean from '../providers/digitalOcean.ts';
 import ProgressSpinner from 'primevue/progressspinner';
+import Hetzner from '../providers/hetzner.ts';
 const props = defineProps<{
   type: Provider,
 }>();
@@ -31,8 +32,14 @@ onMounted( async ()=>{
       }
       break
     case Provider.DIGITALOCEAN:
-      if(DigitalOcean.verifyConfig)
-      loadedSites = await DigitalOcean.getDroplets().then((res:any)=>res.map(DigitalOcean.convertServerToGeneric));
+      if(DigitalOcean.verifyConfig){
+        loadedSites = await DigitalOcean.getDroplets().then((res:any)=>res.map(DigitalOcean.convertServerToGeneric));
+      }
+      break
+    case Provider.HETZNER:
+      if(Hetzner.verifyConfig){
+        loadedSites = await Hetzner.serverList().then((res:any)=>res.map(Hetzner.convertServerToGeneric));
+      }
       break
   }
   console.log(loadedSites)
@@ -49,7 +56,7 @@ onMounted( async ()=>{
     <ProgressSpinner/>
   </div>
   <div class="servers-container" v-else>
-    <h1 class=" text-center  text-3xl font-bold mb-3"> {{ props.type }} servers</h1>
+    <h1 class=" text-center  text-3xl font-bold mb-3  capitalize"> {{ props.type }} servers</h1>
     <div class="list-container">
       <ServerListElement v-for="site in sites" :site="site" :key="site.id"></ServerListElement>
     </div>
