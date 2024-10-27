@@ -13,8 +13,9 @@ onMounted(()=>{
 </script>
 
 <template>
-  heee
-  <ConfigDialogField name="DigitalOceanToken"/>
+  <div class=" bg-slate-400 rounded-md p-3">
+    <ConfigDialogField name="DigitalOceanToken"/>
+  </div>
 </template>
 
 <style scoped>
