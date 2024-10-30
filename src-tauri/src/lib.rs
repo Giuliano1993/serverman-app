@@ -14,9 +14,9 @@ pub fn run() {
             use argon2::{hash_raw, Config, Variant, Version};
 
             let config = Config {
-                lanes: 4,
-                mem_cost: 10_000,
-                time_cost: 10,
+                lanes: 2,
+                mem_cost: 1_000,
+                time_cost: 5,
                 variant: Variant::Argon2id,
                 version: Version::Version13,
                 ..Default::default()

@@ -1,9 +1,10 @@
-<script setup lang="ts">
+<script async setup lang="ts">
 import { readTextFile,writeFile, BaseDirectory,create, exists } from '@tauri-apps/plugin-fs';
 import { path } from '@tauri-apps/api';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, onBeforeMount } from 'vue';
 import { initStronghold, insertRecord, getRecord } from '../utils/stronghold';
-
+import { Client, Stronghold } from '@tauri-apps/plugin-stronghold';
+import { store } from '../store';
 
 defineProps<{
   name: string
@@ -11,50 +12,55 @@ defineProps<{
 defineEmits([])
 const confValue = ref("");
 
+//const { stronghold, client } = await initStronghold();
 onMounted( async ()=>{
   console.log('dialog field create');
+
   
- /*const confFile = "serverman.conf"
- const homeDir = await path.homeDir();
- const filePathFull = `${homeDir}/${confFile}`
- const exsistConfig = await exists(filePathFull, {baseDir: BaseDirectory.AppData})
- if(exsistConfig){
-  console.log('esist3')
- }else{
-   console.log("non esiste");
-  const file = await create(filePathFull,{
-    baseDir: BaseDirectory.AppData
-  })
-  console.log("created")
-  const checkExsistConfig = await exists(filePathFull, {baseDir: BaseDirectory.AppData})
-  console.log(checkExsistConfig)
- }
- */
 
+  const key = 'my_key';
+  const { stronghold, client } = store.strongholdLoaded;
+  const strongholdStore = client.getStore();
 
- const { stronghold, client } = await initStronghold();
+  const value = await getRecord(strongholdStore, key);
+  console.log(value); // 'secret value'
+  confValue.value = value;
 
-const store = client.getStore();
-const key = 'my_key';
-
-// Insert a record to the store
-insertRecord(store, key, 'secret value');
-
-// Read a record from store
-const value = await getRecord(store, key);
-console.log(value); // 'secret value'
-
-// Save your updates
-await stronghold.save();
-
-// Remove a record from store
-await store.remove(key);
 })
+
+
+const saveConf = async ()=>{
+  console.log('savijng conf');
+  const { stronghold, client } = store.strongholdLoaded;
+  const strongholdStore = client.getStore();
+  const key = 'my_key';
+  insertRecord(strongholdStore, key, confValue.value);
+  stronghold.save().then(async () => {
+    const value = await getRecord(strongholdStore, key);
+    console.log('Stronghold saved');
+    console.log(value);
+    confValue.value = value;
+  }).catch((e) => {
+    console.error('Error saving stronghold', e);
+  });
+  
+}
 
 </script>
 
 <template>
-  <input type="text" :value="confValue">
+  <Suspense>
+    <template #default>
+      <div>
+        <input type="text" v-model="confValue">
+        <button  @click="saveConf">Salva</button>
+      </div>
+    </template>
+    <template #fallback>
+      <p>Loading...</p>
+    </template>
+  </Suspense>
+
 </template>
 
 <style scoped>
