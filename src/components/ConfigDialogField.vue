@@ -1,16 +1,17 @@
 <script async setup lang="ts">
 import { readTextFile,writeFile, BaseDirectory,create, exists } from '@tauri-apps/plugin-fs';
 import { path } from '@tauri-apps/api';
-import { onMounted, ref, onBeforeMount } from 'vue';
+import { onMounted, ref, onBeforeMount, defineEmits } from 'vue';
 import { initStronghold, insertRecord, getRecord } from '../utils/stronghold';
 import { Client, Stronghold } from '@tauri-apps/plugin-stronghold';
 import { store } from '../store';
 
-defineProps<{
+const props = defineProps<{
   name: string
 }>()
-defineEmits([])
+const emit =  defineEmits([ 'change'])
 const confValue = ref("");
+
 
 //const { stronghold, client } = await initStronghold();
 onMounted( async ()=>{
@@ -18,11 +19,11 @@ onMounted( async ()=>{
 
   
 
-  const key = 'my_key';
-  const { stronghold, client } = store.strongholdLoaded;
+
+  const { client } = store.strongholdLoaded;
   const strongholdStore = client.getStore();
 
-  const value = await getRecord(strongholdStore, key);
+  const value = await getRecord(strongholdStore, props.name);
   console.log(value); // 'secret value'
   confValue.value = value;
 
@@ -33,12 +34,9 @@ const saveConf = async ()=>{
   console.log('savijng conf');
   const { stronghold, client } = store.strongholdLoaded;
   const strongholdStore = client.getStore();
-  const key = 'my_key';
-  insertRecord(strongholdStore, key, confValue.value);
+  insertRecord(strongholdStore, props.name, confValue.value);
   stronghold.save().then(async () => {
-    const value = await getRecord(strongholdStore, key);
-    console.log('Stronghold saved');
-    console.log(value);
+    const value = await getRecord(strongholdStore, props.name);
     confValue.value = value;
   }).catch((e) => {
     console.error('Error saving stronghold', e);
@@ -51,9 +49,9 @@ const saveConf = async ()=>{
 <template>
   <Suspense>
     <template #default>
-      <div>
-        <input type="text" v-model="confValue">
-        <button  @click="saveConf">Salva</button>
+      <div class=" basis-1/4">
+        <input type="text" :name="props.name" v-model="confValue" @change="emit('change', confValue, props.name)">
+        <!--<button  @click="saveConf" class="p-3 bg-green-300 rounded-md font-bold">Salva</button> -->
       </div>
     </template>
     <template #fallback>
