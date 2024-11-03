@@ -1,7 +1,7 @@
 <script async setup lang="ts">
 import { readTextFile,writeFile, BaseDirectory,create, exists } from '@tauri-apps/plugin-fs';
 import { path } from '@tauri-apps/api';
-import { onMounted, ref, onBeforeMount, defineEmits } from 'vue';
+import { onMounted, ref, onBeforeMount } from 'vue';
 import { initStronghold, insertRecord, getRecord } from '../utils/stronghold';
 import { Client, Stronghold } from '@tauri-apps/plugin-stronghold';
 import { store } from '../store';
@@ -50,7 +50,8 @@ const saveConf = async ()=>{
   <Suspense>
     <template #default>
       <div class=" basis-1/4">
-        <input type="text" :name="props.name" v-model="confValue" @change="emit('change', confValue, props.name)">
+        <label :for="props.name" class="font-bold">{{props.name}}</label>
+        <input type="text" :id="props.name" :name="props.name" v-model="confValue" @change="emit('change', confValue, props.name)">
         <!--<button  @click="saveConf" class="p-3 bg-green-300 rounded-md font-bold">Salva</button> -->
       </div>
     </template>
