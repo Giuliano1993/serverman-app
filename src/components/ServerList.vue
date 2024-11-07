@@ -1,53 +1,59 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import Netlify from '../providers/netlify.ts';
-import { NetlifySite, Provider, Server } from '../types/types.d.ts';
-import ServerListElement from './ServerListElement.vue'
-import Vercel from '../providers/vercel.ts';
-import DigitalOcean from '../providers/digitalOcean.ts';
-import ProgressSpinner from 'primevue/progressspinner';
-import Hetzner from '../providers/hetzner.ts';
+import ProgressSpinner from "primevue/progressspinner";
+import { onMounted, ref } from "vue";
+import DigitalOcean from "../providers/digitalOcean.ts";
+import Hetzner from "../providers/hetzner.ts";
+import Netlify from "../providers/netlify.ts";
+import Vercel from "../providers/vercel.ts";
+import { NetlifySite, Provider, type Server } from "../types/types.d.ts";
+import ServerListElement from "./ServerListElement.vue";
 const props = defineProps<{
-  type: Provider,
+	type: Provider;
 }>();
 const loading = ref(true);
-const sites = defineModel()
-defineEmits([])
+const sites = defineModel();
+defineEmits([]);
 
-onMounted( async ()=>{
-  let loadedSites: Server[] = [];
-  //TODO improvable by creating provider variable which depends on the provider.
-  // then the actions are all the same
-  // before doing this i need to make a refactoring to have a unique method  for listing the server entitites
+onMounted(async () => {
+	let loadedSites: Server[] = [];
+	//TODO improvable by creating provider variable which depends on the provider.
+	// then the actions are all the same
+	// before doing this i need to make a refactoring to have a unique method  for listing the server entitites
 
-  switch (props.type.toLowerCase()){
-    case Provider.NETLIFY:
-      if(Netlify.verifyConfig){
-        loadedSites = await Netlify.listSites().then((res : any)=>res.map(Netlify.convertServerToGeneric))
-      }
-      break
-    case Provider.VERCEL:
-      if(Vercel.verifyConfig){
-        loadedSites = await Vercel.projectList().then((res: any) => res.map(Vercel.convertServerToGeneric));
-      }
-      break
-    case Provider.DIGITALOCEAN:
-      if(DigitalOcean.verifyConfig){
-        loadedSites = await DigitalOcean.getDroplets().then((res:any)=>res.map(DigitalOcean.convertServerToGeneric));
-      }
-      break
-    case Provider.HETZNER:
-      if(Hetzner.verifyConfig){
-        loadedSites = await Hetzner.serverList().then((res:any)=>res.map(Hetzner.convertServerToGeneric));
-      }
-      break
-  }
-  console.log(loadedSites)
-  sites.value = loadedSites
-  loading.value = false
-  
-})
-
+	switch (props.type.toLowerCase()) {
+		case Provider.NETLIFY:
+			if (Netlify.verifyConfig) {
+				loadedSites = await Netlify.listSites().then((res: any) =>
+					res.map(Netlify.convertServerToGeneric),
+				);
+			}
+			break;
+		case Provider.VERCEL:
+			if (Vercel.verifyConfig) {
+				loadedSites = await Vercel.projectList().then((res: any) =>
+					res.map(Vercel.convertServerToGeneric),
+				);
+			}
+			break;
+		case Provider.DIGITALOCEAN:
+			if (DigitalOcean.verifyConfig) {
+				loadedSites = await DigitalOcean.getDroplets().then((res: any) =>
+					res.map(DigitalOcean.convertServerToGeneric),
+				);
+			}
+			break;
+		case Provider.HETZNER:
+			if (Hetzner.verifyConfig) {
+				loadedSites = await Hetzner.serverList().then((res: any) =>
+					res.map(Hetzner.convertServerToGeneric),
+				);
+			}
+			break;
+	}
+	console.log(loadedSites);
+	sites.value = loadedSites;
+	loading.value = false;
+});
 </script>
 
 <template>

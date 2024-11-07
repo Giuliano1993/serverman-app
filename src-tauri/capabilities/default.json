@@ -1,40 +1,38 @@
 {
-  "$schema": "../gen/schemas/desktop-schema.json",
-  "identifier": "default",
-  "description": "Capability for the main window",
-  "windows": [
-    "main"
-  ],
-  "permissions": [
-    "core:default",
-    "shell:allow-open",
-    {
-      "identifier": "http:default",
-      "allow": [
-        {
-          "url": "https://*.netlify.com"
-        },
-        {
-          "url": "https://*.vercel.com"
-        },
-        {
-          "url": "https://*.digitalocean.com"
-        }
-      ],
-      "deny": [
-        {
-          "url": "https://private.tauri.app"
-        }
-      ]
-    },
-    "os:default",
-    "fs:default",
-    "fs:allow-appdata-read",
-    "fs:allow-appdata-write",
-    "fs:allow-home-read",
-    "fs:allow-home-write",
-    "shell:default",
-    "stronghold:default",
-    "stronghold:allow-remove-store-record"
-  ]
+	"$schema": "../gen/schemas/desktop-schema.json",
+	"identifier": "default",
+	"description": "Capability for the main window",
+	"windows": ["main"],
+	"permissions": [
+		"core:default",
+		"shell:allow-open",
+		{
+			"identifier": "http:default",
+			"allow": [
+				{
+					"url": "https://*.netlify.com"
+				},
+				{
+					"url": "https://*.vercel.com"
+				},
+				{
+					"url": "https://*.digitalocean.com"
+				}
+			],
+			"deny": [
+				{
+					"url": "https://private.tauri.app"
+				}
+			]
+		},
+		"os:default",
+		"fs:default",
+		"fs:allow-appdata-read",
+		"fs:allow-appdata-write",
+		"fs:allow-home-read",
+		"fs:allow-home-write",
+		"shell:default",
+		"stronghold:default",
+		"stronghold:allow-remove-store-record"
+	]
 }

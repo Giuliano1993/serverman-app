@@ -1,42 +1,38 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import ConfigDialogField from './ConfigDialogField.vue';
-import { config } from 'process';
+import { config } from "process";
+import { onMounted, ref } from "vue";
+import ConfigDialogField from "./ConfigDialogField.vue";
 
 const configurations = ref({
-  DigitalOceanToken : "",
-  GitUser : "",
-  GitToken : "",
-  NetlifyToken : "",
-  NetlifyUser : "",
-  GitInstallationId : "",
-  userMail : "",
-  vercelToken : "",
-  hetznerToken : ""
-})
+	DigitalOceanToken: "",
+	GitUser: "",
+	GitToken: "",
+	NetlifyToken: "",
+	NetlifyUser: "",
+	GitInstallationId: "",
+	userMail: "",
+	vercelToken: "",
+	hetznerToken: "",
+});
 
-defineProps([])
-defineEmits([])
+defineProps([]);
+defineEmits([]);
 
-onMounted(()=>{
-  console.log('dialog mounted');
-  
-})
+onMounted(() => {
+	console.log("dialog mounted");
+});
 
 const handleChange = (value: string, name: string) => {
-  //console.log('name: ', name);
-  //console.log('value', value);
-  configurations.value[name] = value;
-  //console.log(configurations.value);
-}
+	//console.log('name: ', name);
+	//console.log('value', value);
+	configurations.value[name] = value;
+	//console.log(configurations.value);
+};
 
-
-const saveConfigs = ()=>{
-  console.log('saving configs');
-  console.log(configurations.value);
-
-  
-} 
+const saveConfigs = () => {
+	console.log("saving configs");
+	console.log(configurations.value);
+};
 </script>
 
 <template>

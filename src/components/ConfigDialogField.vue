@@ -1,49 +1,50 @@
 <script async setup lang="ts">
-import { readTextFile,writeFile, BaseDirectory,create, exists } from '@tauri-apps/plugin-fs';
-import { path } from '@tauri-apps/api';
-import { onMounted, ref, onBeforeMount } from 'vue';
-import { initStronghold, insertRecord, getRecord } from '../utils/stronghold';
-import { Client, Stronghold } from '@tauri-apps/plugin-stronghold';
-import { store } from '../store';
+import { path } from "@tauri-apps/api";
+import {
+	BaseDirectory,
+	create,
+	exists,
+	readTextFile,
+	writeFile,
+} from "@tauri-apps/plugin-fs";
+import { Client, Stronghold } from "@tauri-apps/plugin-stronghold";
+import { onBeforeMount, onMounted, ref } from "vue";
+import { store } from "../store";
+import { getRecord, initStronghold, insertRecord } from "../utils/stronghold";
 
 const props = defineProps<{
-  name: string
-}>()
-const emit =  defineEmits([ 'change'])
+	name: string;
+}>();
+const emit = defineEmits(["change"]);
 const confValue = ref("");
 
-
 //const { stronghold, client } = await initStronghold();
-onMounted( async ()=>{
-  console.log('dialog field create');
+onMounted(async () => {
+	console.log("dialog field create");
 
-  
+	const { client } = store.strongholdLoaded;
+	const strongholdStore = client.getStore();
 
+	const value = await getRecord(strongholdStore, props.name);
+	console.log(value); // 'secret value'
+	confValue.value = value;
+});
 
-  const { client } = store.strongholdLoaded;
-  const strongholdStore = client.getStore();
-
-  const value = await getRecord(strongholdStore, props.name);
-  console.log(value); // 'secret value'
-  confValue.value = value;
-
-})
-
-
-const saveConf = async ()=>{
-  console.log('savijng conf');
-  const { stronghold, client } = store.strongholdLoaded;
-  const strongholdStore = client.getStore();
-  insertRecord(strongholdStore, props.name, confValue.value);
-  stronghold.save().then(async () => {
-    const value = await getRecord(strongholdStore, props.name);
-    confValue.value = value;
-  }).catch((e) => {
-    console.error('Error saving stronghold', e);
-  });
-  
-}
-
+const saveConf = async () => {
+	console.log("savijng conf");
+	const { stronghold, client } = store.strongholdLoaded;
+	const strongholdStore = client.getStore();
+	insertRecord(strongholdStore, props.name, confValue.value);
+	stronghold
+		.save()
+		.then(async () => {
+			const value = await getRecord(strongholdStore, props.name);
+			confValue.value = value;
+		})
+		.catch((e) => {
+			console.error("Error saving stronghold", e);
+		});
+};
 </script>
 
 <template>

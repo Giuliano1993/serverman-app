@@ -1,24 +1,22 @@
 <script setup lang="ts">
+import Button from "primevue/button";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
+import InputText from "primevue/inputtext";
+import SplitButton from "primevue/splitbutton";
+import Toolbar from "primevue/toolbar";
+import { ref } from "vue";
+import ConfigFialog from "./components/ConfigDialog.vue";
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import ServerList from './components/ServerList.vue'
-import Toolbar from 'primevue/toolbar';
-import Button from 'primevue/button';
-import IconField from 'primevue/iconfield';
-import InputIcon from 'primevue/inputicon';
-import InputText from 'primevue/inputtext';
-import SplitButton from 'primevue/splitbutton';
-import ConfigFialog from "./components/ConfigDialog.vue"
-import { ref } from 'vue'
-
+import ServerList from "./components/ServerList.vue";
 
 const showModal = ref(false);
-const triggerShowModal = ()=>{
-  console.log('llll')
-  showModal.value = true;
-  console.log(showModal.value);
-  
-}
+const triggerShowModal = () => {
+	console.log("llll");
+	showModal.value = true;
+	console.log(showModal.value);
+};
 </script>
 
 <template>

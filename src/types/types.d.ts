@@ -1,120 +1,122 @@
 export enum Provider {
-    NETLIFY = 'netlify',
-    DIGITALOCEAN = 'digitalocean',
-    VERCEL = 'vercel',
-    AWS = 'aws',
-    HETZNER = "hetzner"
-
+	NETLIFY = "netlify",
+	DIGITALOCEAN = "digitalocean",
+	VERCEL = "vercel",
+	AWS = "aws",
+	HETZNER = "hetzner",
 }
 
-interface RequestError extends Error{
-    status?: number
+interface RequestError extends Error {
+	status?: number;
 }
-
 
 export type DeployInstance = {
-    id: number,
-    name?: string,
-}
+	id: number;
+	name?: string;
+};
 
-export interface Server extends DeployInstance  {
-    ip?: string,
+export interface Server extends DeployInstance {
+	ip?: string;
 }
 
 export interface StaticSiteInstance extends DeployInstance {
-    public_url?: string,
-    admin_url?: string,
-    repo?: string,
-    preview_image_url?: string
+	public_url?: string;
+	admin_url?: string;
+	repo?: string;
+	preview_image_url?: string;
 }
 
-export interface NetlifySite extends StaticSiteInstance {
+export interface NetlifySite extends StaticSiteInstance {}
 
+interface VercelProject extends StaticSiteInstance {
+	name: string;
 }
 
-interface VercelProject extends StaticSiteInstance{
-    name: string
-}
+export interface Droplet extends Server {}
 
-export interface Droplet extends Server{
-
-}
-
-export interface HetznerServer extends Server{
-
-}
+export interface HetznerServer extends Server {}
 
 type Repo = {
-    "branch": string,
-    "cmd": string,
-    "deploy_key_id": string,
-    "dir": string,
-    "private": boolean,
-    "provider": string,
-    "repo": string,
-    "repo_id": string|null,
-    "installation_id": string
-}
+	branch: string;
+	cmd: string;
+	deploy_key_id: string;
+	dir: string;
+	private: boolean;
+	provider: string;
+	repo: string;
+	repo_id: string | null;
+	installation_id: string;
+};
 
 type ApiHeaders = {
-    "Content-Type": string,
-    "Authorization":string
-}
+	"Content-Type": string;
+	Authorization: string;
+};
 
-type DODistribution = {}
+type DODistribution = {};
 
-type SSHKey = {}
+type SSHKey = {};
 
-type DOSize = {}
-
+type DOSize = {};
 
 type ProviderInterface = {
-    API_BASE_URL: string,
-    verifyConfig: boolean,
-    buildBasicHeaders: ()=> ApiHeaders,
-    convertServerToGeneric: (baseServer: any)=> Server
-}
-
+	API_BASE_URL: string;
+	verifyConfig: boolean;
+	buildBasicHeaders: () => ApiHeaders;
+	convertServerToGeneric: (baseServer: any) => Server;
+};
 
 interface DigitalOceanInterface extends ProviderInterface {
-    createDroplet: (name: string, size:string, image:string) => Promise<any>
-    getDroplet: (dropletId: number|string)=>Promise<Droplet|Error>
-    getDroplets: ()=>Promise<Droplet[]|Error>
-    getDistributions: (filter: string)=>Promise<DODistribution|Error>
-    getSshKeys: ()=>Promise<SSHKey[]>
-    getSizes: ()=>Promise<DOSize|Error>
-
+	createDroplet: (name: string, size: string, image: string) => Promise<any>;
+	getDroplet: (dropletId: number | string) => Promise<Droplet | Error>;
+	getDroplets: () => Promise<Droplet[] | Error>;
+	getDistributions: (filter: string) => Promise<DODistribution | Error>;
+	getSshKeys: () => Promise<SSHKey[]>;
+	getSizes: () => Promise<DOSize | Error>;
 }
 
-
 interface NetlifyInterface extends ProviderInterface {
-    buildBasicHeaders: (contentType: string)=>ApiHeaders,
-    result_per_page: number,
-    netlifyRequest: (url: string, body?: any, contentType?: string, method?:string) =>Promise<any>,
-    listSites: ()=>ReturnType<typeof this.netlifyRequest>,
-    getNetlifyDeployKey: ()=>ReturnType<typeof this.netlifyRequest>,
-    deleteSite: (siteId: string)=>ReturnType<typeof this.netlifyRequest>,
-    createSite: (sitename: string, repo:string|null, repoId: string|null, command: string, buildDirectory:string, provider:string, keyName:string)=>ReturnType<typeof this.netlifyRequest>
-
+	buildBasicHeaders: (contentType: string) => ApiHeaders;
+	result_per_page: number;
+	netlifyRequest: (
+		url: string,
+		body?: any,
+		contentType?: string,
+		method?: string,
+	) => Promise<any>;
+	listSites: () => ReturnType<typeof this.netlifyRequest>;
+	getNetlifyDeployKey: () => ReturnType<typeof this.netlifyRequest>;
+	deleteSite: (siteId: string) => ReturnType<typeof this.netlifyRequest>;
+	createSite: (
+		sitename: string,
+		repo: string | null,
+		repoId: string | null,
+		command: string,
+		buildDirectory: string,
+		provider: string,
+		keyName: string,
+	) => ReturnType<typeof this.netlifyRequest>;
 }
 
 interface VercelInterface extends ProviderInterface {
-    projectList: ()=> any,
-    deleteApp: (project: VercelProject) => any
+	projectList: () => any;
+	deleteApp: (project: VercelProject) => any;
 }
 
-interface AWSInterface extends ProviderInterface{
-    
-}
+interface AWSInterface extends ProviderInterface {}
 
-interface HetznerInterface extends ProviderInterface{
-    serverList: ()=>Promise<Server[]|Error>
+interface HetznerInterface extends ProviderInterface {
+	serverList: () => Promise<Server[] | Error>;
 }
 
 type GitHub = {
-    repoList: ()=>Promise<any>,
-    getDeployKey: (repo: string)=>Promise<any>,
-    createDeployKey: (repo:string, keyName:string)=>Promise<any>|false,
-}
+	repoList: () => Promise<any>;
+	getDeployKey: (repo: string) => Promise<any>;
+	createDeployKey: (repo: string, keyName: string) => Promise<any> | false;
+};
 
-export declare function createDroplet(name:string, size:string, image:string) : Droplet|void;
+export declare function createDroplet(
+	name: string,
+	size: string,
+	image: string,
+): Droplet | void;

@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
-import Card from 'primevue/card';
-import Button from 'primevue/button';
-import { Server } from '../types/types.d.ts'
-import { preview } from 'vite';
+import Button from "primevue/button";
+import Card from "primevue/card";
+import { preview } from "vite";
+import { defineProps } from "vue";
+import type { Server } from "../types/types.d.ts";
 const props = defineProps<{
-  site: Server
-}>()
-defineEmits([])
-
-
+	site: Server;
+}>();
+defineEmits([]);
 </script>
 
 <template>
