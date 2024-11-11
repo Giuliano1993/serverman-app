@@ -1,11 +1,3 @@
-export enum Provider {
-	NETLIFY = "netlify",
-	DIGITALOCEAN = "digitalocean",
-	VERCEL = "vercel",
-	AWS = "aws",
-	HETZNER = "hetzner",
-}
-
 interface RequestError extends Error {
 	status?: number;
 }

@@ -5,7 +5,8 @@ import DigitalOcean from "../providers/digitalOcean.ts";
 import Hetzner from "../providers/hetzner.ts";
 import Netlify from "../providers/netlify.ts";
 import Vercel from "../providers/vercel.ts";
-import { NetlifySite, Provider, type Server } from "../types/types.d.ts";
+import type { Server } from "../types/types.d.ts";
+import { Provider } from "../types/types.ts";
 import ServerListElement from "./ServerListElement.vue";
 const props = defineProps<{
 	type: Provider;

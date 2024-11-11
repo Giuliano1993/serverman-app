@@ -11,6 +11,7 @@
 		"compile:tailwind": "npx tailwindcss -i ./public/input.css -o ./public/output.css --watch"
 	},
 	"dependencies": {
+		"@iconify/vue": "^4.1.2",
 		"@primevue/themes": "^4.1.0",
 		"@tauri-apps/api": ">=2.0.0",
 		"@tauri-apps/plugin-fs": "^2.0.0",
@@ -20,6 +21,7 @@
 		"@tauri-apps/plugin-stronghold": "^2.0.0",
 		"primeicons": "^7.0.0",
 		"primevue": "^4.1.0",
+		"radix-vue": "^1.9.9",
 		"undici": "^6.20.1",
 		"vue": "^3.3.4"
 	},

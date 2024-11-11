@@ -1,16 +1,7 @@
 <script async setup lang="ts">
-import { path } from "@tauri-apps/api";
-import {
-	BaseDirectory,
-	create,
-	exists,
-	readTextFile,
-	writeFile,
-} from "@tauri-apps/plugin-fs";
-import { Client, Stronghold } from "@tauri-apps/plugin-stronghold";
 import { onBeforeMount, onMounted, ref } from "vue";
 import { store } from "../store";
-import { getRecord, initStronghold, insertRecord } from "../utils/stronghold";
+import { getRecord } from "../utils/stronghold";
 
 const props = defineProps<{
 	name: string;
@@ -30,21 +21,6 @@ onMounted(async () => {
 	confValue.value = value;
 });
 
-const saveConf = async () => {
-	console.log("savijng conf");
-	const { stronghold, client } = store.strongholdLoaded;
-	const strongholdStore = client.getStore();
-	insertRecord(strongholdStore, props.name, confValue.value);
-	stronghold
-		.save()
-		.then(async () => {
-			const value = await getRecord(strongholdStore, props.name);
-			confValue.value = value;
-		})
-		.catch((e) => {
-			console.error("Error saving stronghold", e);
-		});
-};
 </script>
 
 <template>

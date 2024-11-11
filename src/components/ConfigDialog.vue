@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { config } from "process";
 import { onMounted, ref } from "vue";
 import ConfigDialogField from "./ConfigDialogField.vue";
 
@@ -40,7 +39,7 @@ const saveConfigs = () => {
     <div class="bg-slate-400 rounded-md p-3 modal-body border-green-950 border-solid border-2">
       <div class="  flex flex-wrap  gap-3 justify-around ">
     
-        <ConfigDialogField v-for="v,k in configurations" @change="handleChange" :name="k"/>
+        <ConfigDialogField v-for="v,k in configurations" @change="handleChange" :name="k" />
         
       </div>
       <button @click="saveConfigs" class=" rounded-md p-1 bg-green-950">Save</button>

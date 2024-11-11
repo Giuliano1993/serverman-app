@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Button from "primevue/button";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
@@ -10,11 +9,13 @@ import ConfigFialog from "./components/ConfigDialog.vue";
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import ServerList from "./components/ServerList.vue";
+import MakeNewModal from "./components/MakeNewModal.vue";
+
 
 const showModal = ref(false);
-const triggerShowModal = () => {
+const toggleConfigModal = () => {
 	console.log("llll");
-	showModal.value = true;
+	showModal.value = !showModal.value;
 	console.log(showModal.value);
 };
 </script>
@@ -26,7 +27,7 @@ const triggerShowModal = () => {
           <div class="flex items-center gap-2">
               <span class="font-bold">SERVERMAN</span>
               <Button label="New" text plain />
-              <Button label="Config" text plain @click="triggerShowModal"/>
+              <Button label="Config" text plain @click="toggleConfigModal"/>
           </div>
       </template>
       <template #center>
@@ -52,6 +53,7 @@ const triggerShowModal = () => {
     <ServerList type="digitalocean"></ServerList>
     <ServerList type="hetzner"></ServerList>
   </div>
+  <MakeNewModal></MakeNewModal>
 </template>
 
 <style scoped>
