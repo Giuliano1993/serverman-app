@@ -1,7 +1,6 @@
 import { BaseDirectory, readFile } from "@tauri-apps/plugin-fs";
 import { fetch } from "@tauri-apps/plugin-http";
 import { Command } from "@tauri-apps/plugin-shell";
-import type { GitHub } from "../types/types";
 const API_BASE_URL = "https://api.github.com/";
 
 const Github: GitHub = {

@@ -1,5 +1,5 @@
 import { fetch } from "@tauri-apps/plugin-http";
-import type { Server, VercelInterface } from "../types/types";
+import type { VercelInterface, Server } from "../types";
 
 const Vercel: VercelInterface = {
 	API_BASE_URL: "https://api.vercel.com/v9/",

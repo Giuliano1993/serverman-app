@@ -1,4 +1,4 @@
-import type { DigitalOceanInterface, Droplet, Server } from "../types/types";
+import type { DigitalOceanInterface, Server, Droplet } from "../types";
 
 const DigitalOcean: DigitalOceanInterface = {
 	API_BASE_URL: "https://api.digitalocean.com/v2/",

@@ -20,7 +20,7 @@ export interface StaticSiteInstance extends DeployInstance {
 
 export interface NetlifySite extends StaticSiteInstance {}
 
-interface VercelProject extends StaticSiteInstance {
+export interface VercelProject extends StaticSiteInstance {
 	name: string;
 }
 
@@ -28,7 +28,7 @@ export interface Droplet extends Server {}
 
 export interface HetznerServer extends Server {}
 
-type Repo = {
+export type Repo = {
 	branch: string;
 	cmd: string;
 	deploy_key_id: string;
@@ -40,25 +40,25 @@ type Repo = {
 	installation_id: string;
 };
 
-type ApiHeaders = {
+export type ApiHeaders = {
 	"Content-Type": string;
 	Authorization: string;
 };
 
-type DODistribution = {};
+export type DODistribution = {};
 
-type SSHKey = {};
+export type SSHKey = {};
 
-type DOSize = {};
+export type DOSize = {};
 
-type ProviderInterface = {
+export type ProviderInterface = {
 	API_BASE_URL: string;
 	verifyConfig: boolean;
 	buildBasicHeaders: () => ApiHeaders;
 	convertServerToGeneric: (baseServer: any) => Server;
 };
 
-interface DigitalOceanInterface extends ProviderInterface {
+export interface DigitalOceanInterface extends ProviderInterface {
 	createDroplet: (name: string, size: string, image: string) => Promise<any>;
 	getDroplet: (dropletId: number | string) => Promise<Droplet | Error>;
 	getDroplets: () => Promise<Droplet[] | Error>;
@@ -67,7 +67,7 @@ interface DigitalOceanInterface extends ProviderInterface {
 	getSizes: () => Promise<DOSize | Error>;
 }
 
-interface NetlifyInterface extends ProviderInterface {
+export interface NetlifyInterface extends ProviderInterface {
 	buildBasicHeaders: (contentType: string) => ApiHeaders;
 	result_per_page: number;
 	netlifyRequest: (
@@ -90,18 +90,18 @@ interface NetlifyInterface extends ProviderInterface {
 	) => ReturnType<typeof this.netlifyRequest>;
 }
 
-interface VercelInterface extends ProviderInterface {
+export interface VercelInterface extends ProviderInterface {
 	projectList: () => any;
 	deleteApp: (project: VercelProject) => any;
 }
 
-interface AWSInterface extends ProviderInterface {}
+export interface AWSInterface extends ProviderInterface {}
 
-interface HetznerInterface extends ProviderInterface {
+export interface HetznerInterface extends ProviderInterface {
 	serverList: () => Promise<Server[] | Error>;
 }
 
-type GitHub = {
+export type GitHub = {
 	repoList: () => Promise<any>;
 	getDeployKey: (repo: string) => Promise<any>;
 	createDeployKey: (repo: string, keyName: string) => Promise<any> | false;
@@ -112,3 +112,12 @@ export declare function createDroplet(
 	size: string,
 	image: string,
 ): Droplet | void;
+
+
+export enum Provider {
+	NETLIFY = "netlify",
+	DIGITALOCEAN = "digitalocean",
+	VERCEL = "vercel",
+	AWS = "aws",
+	HETZNER = "hetzner",
+}

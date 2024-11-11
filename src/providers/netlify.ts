@@ -1,12 +1,6 @@
 import { fetch } from "@tauri-apps/plugin-http";
 import Github from "../gitProviders/github";
-import {
-	type ApiHeaders,
-	type NetlifyInterface,
-	NetlifySite,
-	type Repo,
-	type Server,
-} from "../types/types";
+import type { NetlifyInterface, Server, ApiHeaders, Repo } from "../types";
 
 const Netlify: NetlifyInterface = {
 	API_BASE_URL: "https://api.netlify.com",

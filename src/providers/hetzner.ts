@@ -1,4 +1,4 @@
-import type { HetznerInterface, Server } from "../types/types";
+import type { HetznerInterface, Server } from "../types";
 
 const Hetzner: HetznerInterface = {
 	API_BASE_URL: "https://api.hetzner.cloud/v1/",

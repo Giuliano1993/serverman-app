@@ -5,9 +5,11 @@ import DigitalOcean from "../providers/digitalOcean.ts";
 import Hetzner from "../providers/hetzner.ts";
 import Netlify from "../providers/netlify.ts";
 import Vercel from "../providers/vercel.ts";
-import type { Server } from "../types/types.d.ts";
-import { Provider } from "../types/types.ts";
 import ServerListElement from "./ServerListElement.vue";
+import type { Server, Provider } from "../types.ts";
+import { Provider as ProviderName} from "../types.ts";
+
+
 const props = defineProps<{
 	type: Provider;
 }>();
@@ -22,28 +24,28 @@ onMounted(async () => {
 	// before doing this i need to make a refactoring to have a unique method  for listing the server entitites
 
 	switch (props.type.toLowerCase()) {
-		case Provider.NETLIFY:
+		case ProviderName.NETLIFY:
 			if (Netlify.verifyConfig) {
 				loadedSites = await Netlify.listSites().then((res: any) =>
 					res.map(Netlify.convertServerToGeneric),
 				);
 			}
 			break;
-		case Provider.VERCEL:
+		case ProviderName.VERCEL:
 			if (Vercel.verifyConfig) {
 				loadedSites = await Vercel.projectList().then((res: any) =>
 					res.map(Vercel.convertServerToGeneric),
 				);
 			}
 			break;
-		case Provider.DIGITALOCEAN:
+		case ProviderName.DIGITALOCEAN:
 			if (DigitalOcean.verifyConfig) {
 				loadedSites = await DigitalOcean.getDroplets().then((res: any) =>
 					res.map(DigitalOcean.convertServerToGeneric),
 				);
 			}
 			break;
-		case Provider.HETZNER:
+		case ProviderName.HETZNER:
 			if (Hetzner.verifyConfig) {
 				loadedSites = await Hetzner.serverList().then((res: any) =>
 					res.map(Hetzner.convertServerToGeneric),

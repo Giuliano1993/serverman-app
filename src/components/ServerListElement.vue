@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
-import type { Server } from "../types/types.d.ts";
 const props = defineProps<{
 	site: Server;
 }>();
