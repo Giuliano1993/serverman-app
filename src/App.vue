@@ -14,7 +14,6 @@ import MakeNewModal from "./components/MakeNewModal.vue";
 
 const showModal = ref(false);
 const toggleConfigModal = () => {
-	console.log("llll");
 	showModal.value = !showModal.value;
 	console.log(showModal.value);
 };

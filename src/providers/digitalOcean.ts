@@ -7,7 +7,7 @@ const DigitalOcean: DigitalOceanInterface = {
 		const { VITE_doAuthToken: token } = import.meta.env;
 		return {
 			"Content-Type": "application/json",
-			Authorization: "Bearer " + token,
+			Authorization: `Bearer ${token}`,
 		};
 	},
 	convertServerToGeneric: (baseServer) => {
@@ -19,7 +19,7 @@ const DigitalOcean: DigitalOceanInterface = {
 	},
 	createDroplet: async function (name, size, image) {
 		const headers = this.buildBasicHeaders();
-		const createDropletUrl = this.API_BASE_URL + "droplets";
+		const createDropletUrl = `${this.API_BASE_URL}droplets`;
 		const sshKeys = [import.meta.env.VITE_sshKey];
 
 		const data = {
@@ -40,23 +40,23 @@ const DigitalOcean: DigitalOceanInterface = {
 	},
 	getDroplet: async function (dropletId: number | string) {
 		const headers = this.buildBasicHeaders();
-		const url = this.API_BASE_URL + `droplets/${dropletId}`;
+		const url = `${this.API_BASE_URL}droplets/${dropletId}`;
 		const droplet: Droplet | Error = await fetch(url, {
 			headers: headers,
 		})
 			.then((res) => res.json())
-			.then((res) => res["droplet"])
+			.then((res) => res.droplet)
 			.catch((err) => err);
 		return droplet;
 	},
 	getDroplets: async function () {
 		const headers = this.buildBasicHeaders();
-		const url = this.API_BASE_URL + `droplets?page=1`;
+		const url = `${this.API_BASE_URL}droplets?page=1`;
 		return fetch(url, {
 			headers: headers,
 		})
 			.then((res) => res.json())
-			.then((res) => res["droplets"])
+			.then((res) => res.droplets)
 			.catch((err) => {
 				console.log("non va bene");
 				console.log(err);
@@ -64,39 +64,39 @@ const DigitalOcean: DigitalOceanInterface = {
 	},
 	getDistributions: async function (filter = "") {
 		const headers = this.buildBasicHeaders();
-		const url = this.API_BASE_URL + `images?type=distribution`;
+		const url = `${this.API_BASE_URL}images?type=distribution`;
 		return await fetch(url, {
 			headers: headers,
 		})
 			.then((res) => res.json())
-			.then((res) => res["images"])
+			.then((res) => res.images)
 			.then((res) => {
 				const distros = res.filter(
-					(distro: any) => distro["status"] === "available",
+					(distro: any) => distro.status === "available",
 				);
 				if (filter === "") return distros;
 				return distros.filter((distro: any) =>
-					distro["title"].includes(filter),
+					distro.title.includes(filter),
 				);
 			});
 	},
 	getSshKeys: async function () {
 		const headers = this.buildBasicHeaders();
-		const url = this.API_BASE_URL + "account/keys";
+		const url = `${this.API_BASE_URL}account/keys`;
 		return await fetch(url, {
 			headers: headers,
 		})
 			.then((res) => res.json())
-			.then((res) => res["ssh_keys"]);
+			.then((res) => res.ssh_keys);
 	},
 	getSizes: async function () {
 		const headers = this.buildBasicHeaders();
-		const url = this.API_BASE_URL + "sizes";
+		const url = `${this.API_BASE_URL}sizes`;
 		return await fetch(url, {
 			headers: headers,
 		})
 			.then((res) => res.json())
-			.then((res) => res["sizes"]);
+			.then((res) => res.sizes);
 	},
 };
 
