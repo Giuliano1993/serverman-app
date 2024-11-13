@@ -1,8 +1,8 @@
 <script setup>
-import Step1 from './NewInstanceSetup/Step1.vue';
 import { getAvailableProviders } from '../utils/misc';
 import { ref, watch } from 'vue';
-import DigitalOcean from '../providers/digitalOcean';
+import ConfigDO from './NewInstanceSetup/DigitalOcean/ConfigDO.vue';
+
 
 
 defineProps([])
@@ -15,19 +15,14 @@ watch(() => selectedProvider.value, (newValue) => {
     console.log(newValue)
 })
 
-const images = await DigitalOcean.getDistributions();
-const sizes = await DigitalOcean.getSizes();
-
-console.log(images)
-console.log(sizes)
 </script>
 
 <template>
   <Stepper value="1" linear>
     <StepList>
         <Step value="1">Choose Provider</Step>
-        <Step value="2"  v-if="selectedProvider ==  'digitalocean'">Configurazioni</Step>
-        <Step value="3">Scegli Repo</Step>
+        <Step value="2"  v-if="selectedProvider ==  'digitalocean'">Configurations</Step>
+        <Step value="3">Choose Repo</Step>
     </StepList>
     <StepPanels>
         <StepPanel v-slot="{ activateCallback }" value="1">
@@ -40,13 +35,15 @@ console.log(sizes)
                 <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="activateCallback('2')" />
             </div>
         </StepPanel>
-        <StepPanel v-slot="{ activateCallback }" value="2" v-if="selectedProvider == 'digitalocean'">
+        <StepPanel v-slot="{ activateCallback }" value="2" v-if="selectedProvider == 'digitalocean' || selectedProvider == 'hetzner'">
             <div class="flex flex-col h-48">
                 <div class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium">
-                  <Suspense>
-                    <Select editable placeholder="Select an Image" v-model="selectedImage" :options="images" />
-                    <Select editable placeholder="Select a Size" v-model="selectedSize" :options="sizes" />
-                  </Suspense>
+                    <Suspense v-if="selectedProvider == 'digitalocean'">
+                        <ConfigDO />
+                        <template #fallback>
+                            <div>Loading...</div>
+                        </template>
+                    </Suspense>
                 </div>
             </div>
             <div class="flex pt-6 justify-between">

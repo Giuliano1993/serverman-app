@@ -10,6 +10,7 @@ import Step from 'primevue/step';
 import StepPanel from 'primevue/steppanel';
 import Button from "primevue/button";
 import Select from "primevue/select";
+import InputText from "primevue/inputtext";
 
 
 const app = createApp(App);
@@ -32,6 +33,7 @@ app.component("Stepper", Stepper)
 .component("Step", Step)
 .component("StepPanel", StepPanel)
 .component("Button", Button)
-.component("Select",Select);
+.component("Select",Select)
+.component("InputText",InputText);
 
 app.mount("#app");
