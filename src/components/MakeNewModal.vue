@@ -9,11 +9,17 @@ defineProps([])
 defineEmits([])
 const providers = getAvailableProviders();
 
-const selectedProvider = ref(0)
+const selectedProvider = ref(0);
+const serverConfigs = ref({});
 
 watch(() => selectedProvider.value, (newValue) => {
     console.log(newValue)
 })
+
+const configNext = (data) => {
+    console.log(data)
+}
+
 
 </script>
 
@@ -36,20 +42,12 @@ watch(() => selectedProvider.value, (newValue) => {
             </div>
         </StepPanel>
         <StepPanel v-slot="{ activateCallback }" value="2" v-if="selectedProvider == 'digitalocean' || selectedProvider == 'hetzner'">
-            <div class="flex flex-col h-48">
-                <div class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium">
-                    <Suspense v-if="selectedProvider == 'digitalocean'">
-                        <ConfigDO />
-                        <template #fallback>
-                            <div>Loading...</div>
-                        </template>
-                    </Suspense>
-                </div>
-            </div>
-            <div class="flex pt-6 justify-between">
-                <Button label="Back" severity="secondary" icon="pi pi-arrow-left" @click="activateCallback('1')" />
-                <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="activateCallback('3')" />
-            </div>
+            <Suspense v-if="selectedProvider == 'digitalocean'">
+                <ConfigDO @next="configNext" @prev="activateCallback('1')"/>
+                <template #fallback>
+                    <div>Loading...</div>
+                </template>
+            </Suspense>
         </StepPanel>
         <StepPanel v-slot="{ activateCallback }" value="3">
             <div class="flex flex-col h-48">
