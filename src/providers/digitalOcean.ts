@@ -17,7 +17,7 @@ const DigitalOcean: DigitalOceanInterface = {
 		};
 		return s;
 	},
-	createDroplet: async function (name, size, image) {
+	createDroplet: async function (name, size, image, region) {
 		const headers = this.buildBasicHeaders();
 		const createDropletUrl = `${this.API_BASE_URL}droplets`;
 		const sshKeys = [import.meta.env.VITE_sshKey];
@@ -27,6 +27,7 @@ const DigitalOcean: DigitalOceanInterface = {
 			size: size,
 			//image: Number.parseInt(image),
 			image: image,
+			region: region,
 			ssh_keys: sshKeys,
 		};
 		const droplet: Droplet | Error = await fetch(createDropletUrl, {
@@ -81,6 +82,15 @@ const DigitalOcean: DigitalOceanInterface = {
 					distro.title.includes(filter),
 				);
 			});
+	},
+	getRegions: async function () {
+		const headers = this.buildBasicHeaders();
+		const url = `${this.API_BASE_URL}regions`;
+		return await fetch(url, {
+			headers: headers,
+		})
+			.then((res) => res.json())
+			.then((res) => res.regions);
 	},
 	getSshKeys: async function () {
 		const headers = this.buildBasicHeaders();
