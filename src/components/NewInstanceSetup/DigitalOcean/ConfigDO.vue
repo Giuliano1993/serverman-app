@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import InputText from 'primevue/inputtext';
 import DigitalOcean from '../../../providers/digitalOcean';
 import { ref } from 'vue';
@@ -18,17 +18,24 @@ const selectedImage = ref('');
 const selectedSize = ref('');
 const selectedRegion = ref('');
 const isLoading = ref(false);
+const creationError: Ref<null|string> = ref(null)
 const createServer = async () => {
-  isLoading.value = true;
-  const res = await DigitalOcean.createDroplet(name.value, selectedSize.value, selectedImage.value, selectedRegion.value);
-  isLoading.value = false;
-  emit('next',{name:name.value, image: selectedImage.value, size:selectedSize.value});
+    isLoading.value = true;
+    const res = await DigitalOcean.createDroplet(name.value, selectedSize.value, selectedImage.value, selectedRegion.value);
+    isLoading.value = false;
+    console.log(res)
+    if(res instanceof Error){
+      console.log("error here")
+      creationError.value = res.message
+    }
+    emit('next',{name:name.value, image: selectedImage.value, size:selectedSize.value});
 }
 </script>
 
 <template>
-  <div class="flex flex-col h-48">
-      <div class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium">
+
+  <div class="flex flex-col h-48" >
+      <div class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium" v-if="!isLoading">
         <div class=" flex flex-col">
           <div>
             <label for="name">Name</label>
@@ -58,6 +65,22 @@ const createServer = async () => {
             </div>
           </div>
           </div>
+
+          <div v-if="creationError != null" class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class=" text-red-700">
+               {{creationError}}
+            </div>
+          </div>
+      </div>
+      <div v-else class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium">
+          <span class="relative flex h-3 w-3">
+    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+    <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+  </span>
       </div>
   </div>
   <div class="flex pt-6 justify-between">
@@ -69,5 +92,5 @@ const createServer = async () => {
     
 </template>
 
-<style scoped>
+<style >
 </style>

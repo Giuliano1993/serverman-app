@@ -35,7 +35,13 @@ const DigitalOcean: DigitalOceanInterface = {
 			headers: headers,
 			body: JSON.stringify(data),
 		})
-			.then((res) => res.json())
+			.then(async (res) => {
+				console.log(res.status)
+				if( res.status !== 200){
+					const message = await res.json().then((res)=>res.message);
+					throw new Error(message)
+				}
+				return res.json()})
 			.then((res) => res.droplet)
 			.catch((err) => err);
 		return droplet;
