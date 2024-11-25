@@ -62,6 +62,7 @@ export interface DigitalOceanInterface extends ProviderInterface {
 	createDroplet: (name: string, size: string, image: string,region: string) => Promise<any>;
 	getDroplet: (dropletId: number | string) => Promise<Droplet | Error>;
 	getDroplets: () => Promise<Droplet[] | Error>;
+	deleteDroplet: (dropletId: string | number )=> Promise<number>;
 	getRegions: () => Promise<any>;
 	getDistributions: (filter: string) => Promise<DODistribution | Error>;
 	getSshKeys: () => Promise<SSHKey[]>;

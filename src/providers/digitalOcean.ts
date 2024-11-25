@@ -46,6 +46,17 @@ const DigitalOcean: DigitalOceanInterface = {
 			.catch((err) => err);
 		return droplet;
 	},
+	deleteDroplet: async function (dropletId) {
+		const headers = this.buildBasicHeaders();
+		const url = `${this.API_BASE_URL}droplets/${dropletId}`;
+		const response = await fetch(url, {
+			method: "DELETE",
+			headers: headers,
+		}).then((res) => res.status);
+
+		return response;	
+
+	},
 	getDroplet: async function (dropletId: number | string) {
 		const headers = this.buildBasicHeaders();
 		const url = `${this.API_BASE_URL}droplets/${dropletId}`;

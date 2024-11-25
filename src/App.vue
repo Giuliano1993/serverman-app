@@ -3,6 +3,7 @@ import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
 import SplitButton from "primevue/splitbutton";
+
 import Toolbar from "primevue/toolbar";
 import { ref } from "vue";
 import ConfigFialog from "./components/ConfigDialog.vue";
@@ -21,6 +22,8 @@ const toggleConfigModal = () => {
 
 <template>
   <div id="actions-container">
+    <Toast />
+    <ConfirmDialog></ConfirmDialog>
     <Toolbar style="border-radius: 3rem; padding: 1rem 1rem 1rem 1.5rem">
       <template #start>
           <div class="flex items-center gap-2">

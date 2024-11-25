@@ -11,6 +11,10 @@ import StepPanel from 'primevue/steppanel';
 import Button from "primevue/button";
 import Select from "primevue/select";
 import InputText from "primevue/inputtext";
+import ConfirmDialog from 'primevue/confirmdialog';
+import Toast from "primevue/toast";
+import ConfirmationService from 'primevue/confirmationservice';
+import ToastService from 'primevue/toastservice';
 
 
 const app = createApp(App);
@@ -34,6 +38,13 @@ app.component("Stepper", Stepper)
 .component("StepPanel", StepPanel)
 .component("Button", Button)
 .component("Select",Select)
-.component("InputText",InputText);
+.component("InputText",InputText)
+.component("ConfirmDialog",ConfirmDialog)
+.component("Toast",Toast)
+;
+
+app
+.use(ConfirmationService)
+.use(ToastService);
 
 app.mount("#app");

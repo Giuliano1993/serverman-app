@@ -14,10 +14,11 @@ const props = defineProps<{
 	type: Provider;
 }>();
 const loading = ref(true);
-const sites = defineModel();
+const sites : Ref<Server[]>= defineModel();
 defineEmits([]);
 
-onMounted(async () => {
+const loadSites = async () => {
+	loading.value = true;
 	let loadedSites: Server[] = [];
 	//TODO improvable by creating provider variable which depends on the provider.
 	// then the actions are all the same
@@ -56,6 +57,10 @@ onMounted(async () => {
 	console.log(loadedSites);
 	sites.value = loadedSites;
 	loading.value = false;
+}
+
+onMounted(async () => {
+	await loadSites();
 });
 </script>
 
@@ -67,7 +72,7 @@ onMounted(async () => {
   <div class="servers-container" v-else>
     <h1 class=" text-center  text-3xl font-bold mb-3  capitalize"> {{ props.type }} servers</h1>
     <div class="list-container">
-      <ServerListElement v-for="site in sites" :site="site" :key="site.id"></ServerListElement>
+      <ServerListElement v-for="site in sites" :site="site" :key="site.id" :type="type" @deletedServer="loadSites"></ServerListElement>
     </div>
   </div>
 </template>
