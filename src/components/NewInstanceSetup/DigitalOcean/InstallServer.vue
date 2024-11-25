@@ -20,6 +20,7 @@ const installNode: Ref<boolean> = ref(true)
 const installComposer: Ref<boolean> = ref(true)
 const installDocker: Ref<boolean> = ref(false)
 const installMySql: Ref<boolean> = ref(false)
+const installCoolify: Ref<boolean> = ref(false)
 
 </script>
 

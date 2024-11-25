@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import ProgressSpinner from "primevue/progressspinner";
 import { onMounted, ref } from "vue";
-import DigitalOcean from "../providers/digitalOcean.ts";
-import Hetzner from "../providers/hetzner.ts";
-import Netlify from "../providers/netlify.ts";
-import Vercel from "../providers/vercel.ts";
+import DigitalOcean from "../../providers/digitalOcean.ts";
+import Hetzner from "../../providers/hetzner.ts";
+import Netlify from "../../providers/netlify.ts";
+import Vercel from "../../providers/vercel.ts";
 import ServerListElement from "./ServerListElement.vue";
-import type { Server, Provider } from "../types.ts";
-import { Provider as ProviderName} from "../types.ts";
+import type { Server, Provider } from "../../types.ts";
+import { Provider as ProviderName} from "../../types.ts";
 
 
 const props = defineProps<{

@@ -13,7 +13,7 @@ defineEmits([]);
     </div>
     <div class="flex flex-col gap-3 w-full">
       <div>
-        <p>{{site.name}}</p>
+        <p>{{site.name}} ddd</p>
       </div>
       <div class="flex gap-3 justify-around w-full">
         <Button label="Cancel" severity="secondary" outlined class="" />
