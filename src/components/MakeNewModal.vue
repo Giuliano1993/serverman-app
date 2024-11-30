@@ -2,22 +2,27 @@
 import { getAvailableProviders } from '../utils/misc';
 import { ref, watch } from 'vue';
 import ConfigDO from './NewInstanceSetup/DigitalOcean/ConfigDO.vue';
+import InstallServer from "./NewInstanceSetup/DigitalOcean/InstallServer.vue";
 
 
 
 defineProps([])
-defineEmits([])
+defineEmits(['serverCreated'])
 const providers = getAvailableProviders();
 
 const selectedProvider = ref(0);
 const serverConfigs = ref({});
+const installServer = ref(false)
 
 watch(() => selectedProvider.value, (newValue) => {
     console.log(newValue)
 })
 
-const configNext = (data) => {
+const configNext = (data, next) => {
     console.log(data)
+    emit('serverCreated', data)
+    installServer.value = data.install;
+    next("3")
 }
 
 
@@ -25,14 +30,15 @@ const configNext = (data) => {
 
 <template>
   <div class="w-screen h-screen bg-black bg-opacity-90 modal-box">
-    <div class="bg-[#2b2d30] rounded-md p-3 modal-body border-green-950 border-solid border-2">
-      <div class="flex flex-wrap  gap-3 justify-around ">
+    <div class="bg-[#2b2d30] rounded-md p-3 modal-body border-green-950 border-solid border-2 w-2/3">
+      <div class="gap-3 justify-around ">
 
         <Stepper value="1" linear>
           <StepList>
               <Step value="1">Choose Provider</Step>
               <Step value="2"  v-if="selectedProvider ==  'digitalocean'">Configurations</Step>
-              <Step value="3">Choose Repo</Step>
+              <Step value="3"  v-if="installServer">Installation options</Step>
+              <Step value="4">Choose Repo</Step>
           </StepList>
           <StepPanels>
               <StepPanel v-slot="{ activateCallback }" value="1">
@@ -47,13 +53,16 @@ const configNext = (data) => {
               </StepPanel>
               <StepPanel v-slot="{ activateCallback }" value="2" v-if="selectedProvider == 'digitalocean' || selectedProvider == 'hetzner'">
                   <Suspense v-if="selectedProvider == 'digitalocean'">
-                      <ConfigDO @next="configNext" @prev="activateCallback('1')"/>
+                      <ConfigDO @next="(data)=>configNext(data,activateCallback)" @prev="activateCallback('1')"/>
                       <template #fallback>
                           <div>Loading...</div>
                       </template>
                   </Suspense>
               </StepPanel>
-              <StepPanel v-slot="{ activateCallback }" value="3">
+              <StepPanel v-slot="{ activateCallback }" value="3" v-if="installServer">
+                     <InstallServer></InstallServer>
+              </StepPanel>
+              <StepPanel v-slot="{ activateCallback }" value="4">
                   <div class="flex flex-col">
                       <div class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium">Content III</div>
                   </div>

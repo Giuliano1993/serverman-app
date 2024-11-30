@@ -18,6 +18,7 @@ const props = defineProps<{
 
 
 const deleteServer = () => {
+    console.log('chiama funzione')
     confirm.require({
         message: 'Do you want to delete this instance?',
         header: 'Danger Zone',

@@ -53,6 +53,8 @@ const menuitems = [
 </script>
 
 <template>
+  <Toast/>
+  <ConfirmDialog></ConfirmDialog>
   <Dock position="left" :model="menuitems">
     <template #item="{item}">
       <a @click="dockClickActions(item.label)">

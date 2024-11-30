@@ -31,7 +31,12 @@ const createServer = async () => {
       console.log("error here")
       creationError.value = res.messagec
     }
-    emit('next',{name:name.value, image: selectedImage.value, size:selectedSize.value});
+    emit('next',{
+      name:name.value,
+      image: selectedImage.value,
+      size:selectedSize.value,
+      install: install.value
+    });
 }
 </script>
 
