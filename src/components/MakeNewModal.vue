@@ -42,6 +42,7 @@ const configNext = (data, next) => {
           </StepList>
           <StepPanels>
               <StepPanel v-slot="{ activateCallback }" value="1">
+
                   <div class="flex flex-col justify-center items-center">
                       <div class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium">
                           <Select editable placeholder="Select a Provider" v-model="selectedProvider" :options="providers" />

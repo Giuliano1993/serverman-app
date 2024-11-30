@@ -24,7 +24,10 @@ export interface VercelProject extends StaticSiteInstance {
 	name: string;
 }
 
-export interface Droplet extends Server {}
+export interface Droplet extends Server {
+	id: number|string,
+	status: string,
+}
 
 export interface HetznerServer extends Server {}
 
@@ -67,6 +70,7 @@ export interface DigitalOceanInterface extends ProviderInterface {
 	getDistributions: (filter: string) => Promise<DODistribution | Error>;
 	getSshKeys: () => Promise<SSHKey[]>;
 	getSizes: () => Promise<DOSize | Error>;
+	canConnectToDroplet: (dropletId: number,callback: (droplet: Droplet)=>void) => Promise<any>;
 }
 
 export interface NetlifyInterface extends ProviderInterface {

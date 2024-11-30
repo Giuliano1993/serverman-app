@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import InputText from 'primevue/inputtext';
-import DigitalOcean from '../../../providers/digitalOcean';
 import Checkbox from 'primevue/checkbox';
-import { ref } from 'vue';
+import { ref, onMounted, watch } from 'vue';
+import Github from "../../../gitProviders/github.ts";
+
 defineProps([])
 const emit = defineEmits(['prev','next'])
 
@@ -10,7 +10,6 @@ enum WebServer{
     APACHE= "Apache",
     NGINX = "Nginx"
 }
-
 
 const scriptType: Ref<null|string>= ref(null)
 const webServerType: Ref<null|WebServer>= ref(null)
@@ -27,6 +26,18 @@ const chosenWebServer: Ref<boolean> = ref('');
 const repositoryChoices: Ref<any[]> = ref([])
 const chosenRepo = ref(null)
 
+onMounted(async ()=>{
+  const repos = await Github.repoList();
+  repositoryChoices.value = repos.map((repo: any) => {
+    return {
+      value: repo.id,
+      label: repo.name,
+    }
+  })
+  console.log(repos);
+});
+
+
 </script>
 
 <template>
@@ -38,15 +49,15 @@ const chosenRepo = ref(null)
             General Configurations
           </div>
           <div class="gap-4">
+            <Checkbox class="mr-3" name="uploadRepo" inputId="uploadRepo" v-model="uploadRepo" binary/>
             <label for="uploadRepo">Use a repository</label>
-            <Checkbox name="uploadRepo" v-model="uploadRepo" binary/>
           </div>
           <div class="col-span-2">
-            <Select v-if="uploadRepo" editable placeholder="Select a repository" v-model="chosenRepo" :options="repositoryChoices" />
+            <Select v-if="uploadRepo" editable placeholder="Select a repository" v-model="chosenRepo" :options="repositoryChoices" optionLabel="label" optionValue="value"/>
           </div>
           <div>
+            <Checkbox class="mr-3" name="installWebServer" inputId="installWebServer" v-model="installWebServer" binary/>
             <label for="installWebServer">Install Web Server</label>
-            <Checkbox name="installWebServer" v-model="installWebServer" binary/>
           </div>
           <div class="col-span-2">
             <Select v-if="installWebServer" editable placeholder="Select a web Server" v-model="chosenWebServer" :options="['Nginx','Apache']" />
@@ -55,31 +66,31 @@ const chosenRepo = ref(null)
             Items to install
           </div>
           <div>
-            <Checkbox class="mr-3"  name="installPhp" v-model="installPhp" binary/>
+            <Checkbox class="mr-3"  name="installPhp" inputId="installPhp" v-model="installPhp" binary/>
             <label for="installPhp">Install PHP</label>
           </div>
           <div>
-            <Checkbox class="mr-3" name="installGit" v-model="installGit" binary/>
+            <Checkbox class="mr-3" name="installGit" inputId="installGit" v-model="installGit" binary/>
             <label for="installGit">Install Git</label>
           </div>
           <div>
-            <Checkbox class="mr-3" name="installNode" v-model="installNode" binary/>
+            <Checkbox class="mr-3" name="installNode" inputId="installNode" v-model="installNode" binary/>
             <label for="installNode">Install Node</label>
           </div>
           <div>
-            <Checkbox class="mr-3" name="installComposer" v-model="installComposer" binary/>
+            <Checkbox class="mr-3" name="installComposer" inputId="installComposer" v-model="installComposer" binary/>
             <label for="installComposer">Install Composer</label>
           </div>
           <div>
-            <Checkbox class="mr-3" name="installDocker" v-model="installDocker" binary/>
+            <Checkbox class="mr-3" name="installDocker" inputId="installDocker" v-model="installDocker" binary/>
             <label for="installDocker">Install Docker</label>
           </div>
           <div>
-            <Checkbox class="mr-3" name="installCoolify" v-model="installCoolify" binary/>
+            <Checkbox class="mr-3" name="installCoolify" inputId="installCoolify" v-model="installCoolify" binary/>
             <label for="installCoolify">Install Coolify</label>
           </div>
           <div>
-            <Checkbox class="mr-3" name="installMySql" v-model="installMySql" binary/>
+            <Checkbox class="mr-3" name="installMySql" inputId="installMySql" v-model="installMySql" binary/>
             <label for="installMySql">Install MySql</label>
           </div>
 

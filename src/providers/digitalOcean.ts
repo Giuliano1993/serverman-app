@@ -127,6 +127,17 @@ const DigitalOcean: DigitalOceanInterface = {
 			.then((res) => res.json())
 			.then((res) => res.sizes);
 	},
+	canConnectToDroplet: async function(dropletId, callback){
+		let droplet = await this.getDroplet(dropletId);
+		const dropletInterval = setInterval(async () => {
+			console.log('.');
+			if(droplet?.status === 'active'){
+				clearInterval(dropletInterval);
+				callback(droplet);
+			}
+			droplet = await this.getDroplet(dropletId);
+		},1000)
+	}
 };
 
 export default DigitalOcean;

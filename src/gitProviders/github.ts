@@ -13,7 +13,7 @@ const Github: GitHub = {
 				Authorization: `Bearer ${gitToken}`,
 				"X-GitHub-Api-Version": "2022-11-28",
 			},
-		}).then((res) => res.json());
+		}).then((res) => res.json()).catch((err)=>err);
 	},
 	getDeployKey: async (repo) => {
 		const { VITE_gitUser: gitUser, VITE_gitToken: gitToken } = import.meta.env;

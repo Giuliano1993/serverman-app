@@ -17,6 +17,9 @@
 				},
 				{
 					"url": "https://*.digitalocean.com"
+				},
+				{
+					"url": "https://*.github.com"
 				}
 			],
 			"deny": [
