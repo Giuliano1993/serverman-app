@@ -79,9 +79,9 @@ export interface NetlifyInterface extends ProviderInterface {
 		method?: string,
 		jsonReponse?: boolean,
 	) => Promise<any>;
-	listSites: () => ReturnType<typeof this.netlifyRequest>;
-	getNetlifyDeployKey: () => ReturnType<typeof this.netlifyRequest>;
-	deleteSite: (siteId: number|string) => ReturnType<typeof this.netlifyRequest>;
+	listSites: () => ReturnType<NetlifyInterface["netlifyRequest"]>;
+	getNetlifyDeployKey: () => ReturnType<NetlifyInterface["netlifyRequest"]>;
+	deleteSite: (siteId: number|string) => ReturnType<NetlifyInterface["netlifyRequest"]>;
 	createSite: (
 		sitename: string,
 		repo: string | null,
@@ -90,12 +90,12 @@ export interface NetlifyInterface extends ProviderInterface {
 		buildDirectory: string,
 		provider: string,
 		keyName: string,
-	) => ReturnType<typeof this.netlifyRequest>;
+	) => ReturnType<NetlifyInterface["netlifyRequest"]>;
 }
 
 export interface VercelInterface extends ProviderInterface {
-	projectList: () => any;
-	deleteApp: (project: VercelProject) => any;
+	projectList: () => Promise<[]>;
+	deleteApp: (project: VercelProject) => Promise<unknown>;
 }
 
 export interface AWSInterface extends ProviderInterface {}
@@ -105,7 +105,7 @@ export interface HetznerInterface extends ProviderInterface {
 }
 
 export type GitHub = {
-	repoList: () => Promise<any>;
+	repoList: () => Promise<unknown[]>;
 	getDeployKey: (repo: string) => Promise<any>;
 	createDeployKey: (repo: string, keyName: string) => Promise<any> | false;
 };

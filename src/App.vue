@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import IconField from "primevue/iconfield";
-import InputIcon from "primevue/inputicon";
-import InputText from "primevue/inputtext";
-import SplitButton from "primevue/splitbutton";
-
-import Toolbar from "primevue/toolbar";
+import Dock from 'primevue/dock'
+import 'primeicons/primeicons.css'
 import { ref } from "vue";
 import ConfigFialog from "./components/ConfigDialog.vue";
 // This starter template is using Vue 3 <script setup> SFCs
@@ -14,48 +10,64 @@ import MakeNewModal from "./components/MakeNewModal.vue";
 
 
 const showModal = ref(false);
+const showCreate = ref(false);
+
 const toggleConfigModal = () => {
 	showModal.value = !showModal.value;
 	console.log(showModal.value);
 };
+
+const toggleShowCreate = () => {
+  showCreate.value = !showCreate.value;
+}
+
+const dockClickActions = (actionName: string) => {
+  const action  = actionName.toLowerCase();
+  switch (action) {
+    case "new":
+      toggleShowCreate()
+      break;
+    case "config":
+      toggleConfigModal();
+      break;
+    case "search":
+      break;
+    default:
+
+  }
+
+}
+
+const menuitems = [
+  {
+    label: "New",
+    icon:  "plus"
+  },{
+    label: "Config",
+    icon:  "cog"
+  },{
+    label: "Search",
+    icon:  "search"
+  },
+]
 </script>
 
 <template>
-  <div id="actions-container">
-    <Toast />
-    <ConfirmDialog></ConfirmDialog>
-    <Toolbar style="border-radius: 3rem; padding: 1rem 1rem 1rem 1.5rem">
-      <template #start>
-          <div class="flex items-center gap-2">
-              <span class="font-bold">SERVERMAN</span>
-              <Button label="New" text plain />
-              <Button label="Config" text plain @click="toggleConfigModal"/>
-          </div>
-      </template>
-      <template #center>
-        <IconField>
-            <InputIcon>
-                <i class="pi pi-search" />
-            </InputIcon>
-            <InputText placeholder="Search" />
-        </IconField>
-      </template>
-      <template #end>
-          <div class="flex items-center gap-2">
-              <Button label="Share" severity="contrast" size="small" />
-          </div>
-      </template>
-  </Toolbar>
-
+  <Dock position="left" :model="menuitems">
+    <template #item="{item}">
+      <a @click="dockClickActions(item.label)">
+        <i :class="'pi pi-'+item.icon" style="font-size: 1rem"></i>
+      </a>
+    </template>
+  </Dock>
   <ConfigFialog v-if="showModal"></ConfigFialog>
-  </div>
-  <div class="flex flex-row justify-between w-full">
+  <div class="flex flex-row justify-between" id="server-list-container">
     <ServerList type="Netlify"></ServerList>
     <ServerList type="Vercel"></ServerList>
     <ServerList type="digitalocean"></ServerList>
     <ServerList type="hetzner"></ServerList>
   </div>
-  <MakeNewModal></MakeNewModal>
+  <MakeNewModal v-if="showCreate"></MakeNewModal>
 </template>
 
 <style scoped>
@@ -74,9 +86,16 @@ const toggleConfigModal = () => {
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
-#actions-container{
-  height: 30vh;
+
+.p-toolbar{
+  background-color: #2b2d30;
 }
 
+.p-dock{
+  z-index: 9999999999;
+}
+#server-list-container {
+  margin-left: 4.5em;
+}
 
 </style>

@@ -84,7 +84,7 @@ const deleteServer = () => {
       <div class="flex gap-3 justify-around w-full">
 
         <Button label="Delete" severity="danger" outlined class="" @click="deleteServer" />
-        <Button label="Save" class="" />
+        <Button label="Info" class="" />
       </div>
     </div>
     

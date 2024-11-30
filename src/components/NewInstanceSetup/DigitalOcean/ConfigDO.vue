@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import InputText from 'primevue/inputtext';
 import DigitalOcean from '../../../providers/digitalOcean';
+import Checkbox from 'primevue/checkbox';
 import { ref } from 'vue';
 defineProps([])
 const emit = defineEmits(['prev','next'])
@@ -17,7 +18,9 @@ const name = ref('');
 const selectedImage = ref('');
 const selectedSize = ref('');
 const selectedRegion = ref('');
+const install = ref(false);
 const isLoading = ref(false);
+
 const creationError: Ref<null|string> = ref(null)
 const createServer = async () => {
     isLoading.value = true;
@@ -26,7 +29,7 @@ const createServer = async () => {
     console.log(res)
     if(res instanceof Error){
       console.log("error here")
-      creationError.value = res.message
+      creationError.value = res.messagec
     }
     emit('next',{name:name.value, image: selectedImage.value, size:selectedSize.value});
 }
@@ -34,8 +37,8 @@ const createServer = async () => {
 
 <template>
 
-  <div class="flex flex-col h-48" >
-      <div class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium" v-if="!isLoading">
+  <div class="flex flex-col" >
+      <div class=" rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium" v-if="!isLoading">
         <div class=" flex flex-col">
           <div>
             <label for="name">Name</label>
@@ -63,6 +66,10 @@ const createServer = async () => {
             <div>
               <Select name="region" id="region" editable placeholder="Select a region" v-model="selectedRegion" :options="regions" optionLabel="label" optionValue="value"/>
             </div>
+          </div>
+          <div>
+            <label for="installServer">Install Server</label>
+            <Checkbox v-model="install" binary/>
           </div>
           </div>
 
