@@ -77,10 +77,11 @@ export interface NetlifyInterface extends ProviderInterface {
 		body?: any,
 		contentType?: string,
 		method?: string,
+		jsonReponse?: boolean,
 	) => Promise<any>;
 	listSites: () => ReturnType<typeof this.netlifyRequest>;
 	getNetlifyDeployKey: () => ReturnType<typeof this.netlifyRequest>;
-	deleteSite: (siteId: string) => ReturnType<typeof this.netlifyRequest>;
+	deleteSite: (siteId: number|string) => ReturnType<typeof this.netlifyRequest>;
 	createSite: (
 		sitename: string,
 		repo: string | null,

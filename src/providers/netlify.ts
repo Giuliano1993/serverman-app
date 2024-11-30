@@ -29,6 +29,7 @@ const Netlify: NetlifyInterface = {
 		body = {},
 		contentType = "application/json",
 		method = "POST",
+		jsonReponse = true,
 	) {
 		const reqPars: { method: string; headers: ApiHeaders; body?: string } = {
 			method,
@@ -36,16 +37,28 @@ const Netlify: NetlifyInterface = {
 			//body: ''
 		};
 		if (method !== "GET") {
-			reqPars["body"] = JSON.stringify(body);
+			reqPars.body = JSON.stringify(body);
 		}
-		return await fetch(this.API_BASE_URL + url, reqPars).then((res) => {
-			return new Promise((resolve, reject) => {
-				if (!res.ok) {
-					reject(res);
-				} else {
-					resolve(res.json());
+		return await fetch(this.API_BASE_URL + url, reqPars).then(async (res) => {
+			if (res.ok){
+				const response =  {
+					status: res.status,
+					response: jsonReponse ?  await res.json() : null
 				}
-			});
+				return new Promise((resolve, reject) => {
+					resolve(response);
+				})
+			}
+			const errorResponse = {
+				status: res.status,
+				response: await res.text(),
+				error: "Something went wrong",
+
+			}
+			return new Promise((resolve, reject) => {
+				reject(errorResponse);
+			})
+
 		});
 	},
 	listSites: async function () {
@@ -62,6 +75,7 @@ const Netlify: NetlifyInterface = {
 			{},
 			"application/json",
 			"DELETE",
+			false
 		);
 	},
 	getNetlifyDeployKey: async function () {

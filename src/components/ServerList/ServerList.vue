@@ -28,7 +28,7 @@ const loadSites = async () => {
 		case ProviderName.NETLIFY:
 			if (Netlify.verifyConfig) {
 				loadedSites = await Netlify.listSites().then((res: any) =>
-					res.map(Netlify.convertServerToGeneric),
+					res.response.map(Netlify.convertServerToGeneric)
 				);
 			}
 			break;

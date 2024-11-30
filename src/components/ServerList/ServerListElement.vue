@@ -2,9 +2,10 @@
 import { defineProps,defineEmits } from "vue";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
-import type { Server, Provider } from "../../types.ts";
+import { Server, Provider } from "../../types.ts";
 import { Provider as ProviderName} from "../../types.ts";
 import DigitalOcean from "../../providers/digitalOcean.ts";
+import Netlify from "../../providers/netlify.ts";
 
 const confirm = useConfirm();
 const toast = useToast();
@@ -32,15 +33,21 @@ const deleteServer = () => {
             severity: 'danger'
         },
         accept: async () => {
-            //toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
-            switch(props.type){
-              case ProviderName.NETLIFY:
-                //Netlify.deleteSite(site.id);
+            switch(props.type.toLowerCase()){
+              case ProviderName.NETLIFY.toLocaleLowerCase():{
+                  const deleteResponse = await Netlify.deleteSite(props.site.id)
+                  if(deleteResponse.status === 204){
+                    toast.add({ severity: 'success', summary: 'Success', detail: 'Server deleted', life: 3000 });
+                    emit('deletedServer');
+                  }else{
+                    toast.add({ severity: 'error', summary: 'Rejected', detail: 'Something went wrong try afain later', life: 3000 });
+                  }
+                }
                 break;
-              case ProviderName.VERCEL:
+              case ProviderName.VERCEL.toLocaleLowerCase():
                 //Vercel.deleteProject(site.id);
                 break;
-              case ProviderName.DIGITALOCEAN: {
+              case ProviderName.DIGITALOCEAN.toLocaleLowerCase(): {
                 const responseCode = await DigitalOcean.deleteDroplet(props.site.id);
                 if(responseCode === 204){
                   toast.add({ severity: 'success', summary: 'Success', detail: 'Server deleted', life: 3000 });
@@ -50,7 +57,7 @@ const deleteServer = () => {
                 }
                 break;
               }
-              case ProviderName.HETZNER:
+              case ProviderName.HETZNER.toLocaleLowerCase():
                 //Hetzner.deleteServer(site.id);
                 break;
               default:
