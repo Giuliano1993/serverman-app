@@ -16,7 +16,6 @@ const toggleConfigModal = () => {
 	showModal.value = !showModal.value;
 	console.log(showModal.value);
 };
-
 const toggleShowCreate = () => {
   showCreate.value = !showCreate.value;
 }

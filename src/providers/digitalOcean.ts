@@ -1,4 +1,5 @@
 import type { DigitalOceanInterface, Server, Droplet } from "../types";
+import { invoke } from "@tauri-apps/api/core";
 
 const DigitalOcean: DigitalOceanInterface = {
 	API_BASE_URL: "https://api.digitalocean.com/v2/",
@@ -137,7 +138,15 @@ const DigitalOcean: DigitalOceanInterface = {
 			}
 			droplet = await this.getDroplet(dropletId);
 		},1000)
+	},
+	sshInstallServer : function(droplet: Droplet, commands: string[]){
+		// exec ssh trough rust
+		const {ip_address} = droplet['networks']['v4'].find(ip=>ip.type === "public");
+
+		invoke("exec_ssh_commands",{ip_address:ip_address,commands:commands});
+		return true
 	}
+
 };
 
 export default DigitalOcean;

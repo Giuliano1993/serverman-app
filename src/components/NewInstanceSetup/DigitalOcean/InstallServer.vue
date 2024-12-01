@@ -2,8 +2,12 @@
 import Checkbox from 'primevue/checkbox';
 import { ref, onMounted, watch } from 'vue';
 import Github from "../../../gitProviders/github.ts";
+import DigitalOcean from "../../../providers/digitalOcean.ts";
+import { buildInstallServerScript } from '../../../utils/server.ts';
 
-defineProps([])
+const props = defineProps<{
+  dropletId : string|integer
+}>()
 const emit = defineEmits(['prev','next'])
 
 enum WebServer{
@@ -11,8 +15,6 @@ enum WebServer{
     NGINX = "Nginx"
 }
 
-const scriptType: Ref<null|string>= ref(null)
-const webServerType: Ref<null|WebServer>= ref(null)
 const uploadRepo: Ref<boolean> = ref(false)
 const installPhp: Ref<boolean> = ref(true)
 const installGit: Ref<boolean> = ref(true)
@@ -36,6 +38,28 @@ onMounted(async ()=>{
   })
   console.log(repos);
 });
+
+const configureServer = ()=>{
+  DigitalOcean.canConnectToDroplet(props.dropletId, (d)=>{
+    const opts = {
+      webServerType : chosenWebServer.value,
+      uploadRepo : uploadRepo.value,
+      installPhp : installPhp.value,
+      installGit : installGit.value,
+      installNode : installNode.value,
+      installComposer : installComposer.value,
+      installDocker : installDocker.value,
+      installMySql : installMySql.value,
+      installCoolify : installCoolify.value,
+      installWebServer : installWebServer.value,
+      chosenRepo : chosenRepo.value
+    }
+    const commands = buildInstallServerScript(opts)
+    DigitalOcean.sshInstallServer(d, commands)
+  })
+
+  emit('next',{})
+}
 
 
 </script>
@@ -105,7 +129,7 @@ onMounted(async ()=>{
   </div>
   <div class="flex pt-6 justify-between">
       <Button label="Back" severity="secondary" icon="pi pi-arrow-left" @click="emit('prev')" />
-      <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="createServer" />
+      <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="configureServer" />
   </div>
   
       

@@ -12,7 +12,7 @@ type installConfigurations = {
     chosenRepo : any
 }
 
-const buildInstallServerScript : string[] = (options:installConfigurations)=>{
+const buildInstallServerScript  = (options:installConfigurations) : string[] => {
     let script: string[] = [];
     script.push("apt-get update")
     for (const optionsKey in options) {
@@ -55,3 +55,6 @@ const buildInstallServerScript : string[] = (options:installConfigurations)=>{
     }
     return script;
 }
+
+
+export { buildInstallServerScript }

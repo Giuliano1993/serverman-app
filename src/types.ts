@@ -71,6 +71,7 @@ export interface DigitalOceanInterface extends ProviderInterface {
 	getSshKeys: () => Promise<SSHKey[]>;
 	getSizes: () => Promise<DOSize | Error>;
 	canConnectToDroplet: (dropletId: number,callback: (droplet: Droplet)=>void) => Promise<any>;
+	sshInstallServer:(droplet: Droplet, commands: string[])=>boolean
 }
 
 export interface NetlifyInterface extends ProviderInterface {

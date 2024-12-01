@@ -1,11 +1,27 @@
 use tauri::Manager;
+use ssh2::Session;
+use std::net::TcpStream;
 
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
+
+
 #[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+fn exec_ssh_commands(ip: String) -> String {
+    // Connect to the local SSH server
+    let tcp = TcpStream::connect(ip).unwrap();
+    let mut sess = Session::new().unwrap();
+    sess.set_tcp_stream(tcp);
+    sess.handshake().unwrap();
+
+    // Try to authenticate with the first identity in the agent.
+    sess.userauth_agent("root").unwrap();
+
+    // Make sure we succeeded
+    assert!(sess.authenticated());
+
+    format!("Yay got it")
 }
+
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -42,7 +58,7 @@ pub fn run() {
                 app.handle().plugin(tauri_plugin_stronghold::Builder::with_argon2(&salt_path).build())?;
                 Ok(())
             })
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![exec_ssh_commands])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
