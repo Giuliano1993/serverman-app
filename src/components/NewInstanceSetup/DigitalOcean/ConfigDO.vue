@@ -29,13 +29,15 @@ const createServer = async () => {
     console.log(res)
     if(res instanceof Error){
       console.log("error here")
-      creationError.value = res.messagec
+      creationError.value = res.message
+      return
     }
     emit('next',{
       name:name.value,
       image: selectedImage.value,
       size:selectedSize.value,
-      install: install.value
+      install: install.value,
+      dropletId: res.id
     });
 }
 </script>

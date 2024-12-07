@@ -7,12 +7,13 @@ import InstallServer from "./NewInstanceSetup/DigitalOcean/InstallServer.vue";
 
 
 defineProps([])
-defineEmits(['serverCreated'])
+const emit = defineEmits(['serverCreated'])
 const providers = getAvailableProviders();
 
 const selectedProvider = ref(0);
 const serverConfigs = ref({});
 const installServer = ref(false)
+const serverId = ref(null)
 
 watch(() => selectedProvider.value, (newValue) => {
     console.log(newValue)
@@ -22,6 +23,7 @@ const configNext = (data, next) => {
     console.log(data)
     emit('serverCreated', data)
     installServer.value = data.install;
+    serverId.value = data.dropletId;
     next("3")
 }
 
@@ -61,7 +63,7 @@ const configNext = (data, next) => {
                   </Suspense>
               </StepPanel>
               <StepPanel v-slot="{ activateCallback }" value="3" v-if="installServer">
-                     <InstallServer></InstallServer>
+                     <InstallServer :dropletId="serverId"></InstallServer>
               </StepPanel>
               <StepPanel v-slot="{ activateCallback }" value="4">
                   <div class="flex flex-col">

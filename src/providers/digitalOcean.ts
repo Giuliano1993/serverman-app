@@ -38,7 +38,7 @@ const DigitalOcean: DigitalOceanInterface = {
 		})
 			.then(async (res) => {
 				console.log(res.status)
-				if( res.status !== 200){
+				if( res.status !== 202){
 					const message = await res.json().then((res)=>res.message);
 					throw new Error(message)
 				}
@@ -139,11 +139,11 @@ const DigitalOcean: DigitalOceanInterface = {
 			droplet = await this.getDroplet(dropletId);
 		},1000)
 	},
-	sshInstallServer : function(droplet: Droplet, commands: string[]){
+	sshInstallServer : (droplet: Droplet, commands: string[])=> {
 		// exec ssh trough rust
 		const {ip_address} = droplet['networks']['v4'].find(ip=>ip.type === "public");
 
-		invoke("exec_ssh_commands",{ip_address:ip_address,commands:commands});
+		invoke("exec_ssh_commands",{ip:ip_address,commands:commands});
 		return true
 	}
 
