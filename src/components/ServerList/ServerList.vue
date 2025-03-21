@@ -17,6 +17,9 @@ const loading = ref(true);
 const sites : Ref<Server[]>= defineModel();
 defineEmits([]);
 
+const error = ref(false);
+const errorMessage = ref("");
+
 const loadSites = async () => {
 	loading.value = true;
 	let loadedSites: Server[] = [];
@@ -41,20 +44,32 @@ const loadSites = async () => {
 			break;
 		case ProviderName.DIGITALOCEAN:
 			if (DigitalOcean.verifyConfig) {
-				loadedSites = await DigitalOcean.getDroplets().then((res: any) =>
-					res.map(DigitalOcean.convertServerToGeneric),
-				);
+				loadedSites = await DigitalOcean.getDroplets().then((res: any) =>{
+					return res.map(DigitalOcean.convertServerToGeneric)
+				}
+				).catch((e)=>{
+					error.value = true;
+					if(e.message.toLowerCase() === 'unauthorized'){
+						loadedSites = [];
+						errorMessage.value = 'Please check your DigitalOcean token';
+					}
+				});
 			}
 			break;
 		case ProviderName.HETZNER:
 			if (Hetzner.verifyConfig) {
 				loadedSites = await Hetzner.serverList().then((res: any) =>
 					res.map(Hetzner.convertServerToGeneric),
-				);
+				).catch((e)=>{
+					error.value = true;
+					if(e.message.toLowerCase() === 'unauthorized'){
+						loadedSites = [];
+						errorMessage.value = 'Please check your Hetzner token';
+					}
+				});
 			}
 			break;
 	}
-	console.log(loadedSites);
 	sites.value = loadedSites;
 	loading.value = false;
 }
@@ -71,9 +86,12 @@ onMounted(async () => {
   </div>
   <div class="servers-container" v-else>
     <h1 class=" text-center  text-3xl font-bold mb-3  capitalize"> {{ props.type }} servers</h1>
-    <div class="list-container">
+    <div class="list-container" v-if="!error">
       <ServerListElement v-for="site in sites" :site="site" :key="site.id" :type="type" @deletedServer="loadSites"></ServerListElement>
     </div>
+	<div v-else>
+	  <p class=" text-center font-bold mb-3  capitalize text-red-700"> {{ errorMessage }}</p>
+	</div>
   </div>
 </template>
 

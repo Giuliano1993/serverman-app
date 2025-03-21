@@ -76,11 +76,13 @@ const DigitalOcean: DigitalOceanInterface = {
 			headers: headers,
 		})
 			.then((res) => res.json())
-			.then((res) => res.droplets)
-			.catch((err) => {
-				console.log("non va bene");
-				console.log(err);
-			});
+			.then((res) => {
+				if(res.id.toLowerCase() === 'unauthorized'){
+					throw new Error("Unauthorized");
+				}
+				return res.droplets
+			})
+			
 	},
 	getDistributions: async function (filter = "") {
 		const headers = this.buildBasicHeaders();
@@ -141,8 +143,9 @@ const DigitalOcean: DigitalOceanInterface = {
 	},
 	sshInstallServer : (droplet: Droplet, commands: string[])=> {
 		// exec ssh trough rust
-		const {ip_address} = droplet['networks']['v4'].find(ip=>ip.type === "public");
+		const {ip_address} = droplet['networks']['v4'].find(ip =>ip.type === "public");
 
+		console.log(ip_address);
 		invoke("exec_ssh_commands",{ip:ip_address,commands:commands});
 		return true
 	}

@@ -24,6 +24,9 @@ const Hetzner: HetznerInterface = {
 		})
 			.then((response) => response.json())
 			.then((data) => {
+				if (data.error) {
+					throw new Error(data.error.code);
+				}
 				return data.servers;
 			});
 		return servers;
