@@ -1,25 +1,40 @@
 use tauri::Manager;
 use ssh2::Session;
-use std::net::TcpStream;
-
-
-
+use std::{net::TcpStream};
+use std::io::Read;
+use std::net::ToSocketAddrs;
 
 #[tauri::command]
-fn exec_ssh_commands(ip: String) -> String {
-    // Connect to the local SSH server
-    let tcp = TcpStream::connect(ip).unwrap();
+fn exec_ssh_commands(ip: String, command: String) -> String {
+    // Connect to the SSH server
+    let address = (ip.clone(), 22).to_socket_addrs().unwrap().next().unwrap();
+    let tcp = TcpStream::connect(address).unwrap();
     let mut sess = Session::new().unwrap();
     sess.set_tcp_stream(tcp);
     sess.handshake().unwrap();
 
-    // Try to authenticate with the first identity in the agent.
+    // Authenticate with the first identity in the agent
     sess.userauth_agent("root").unwrap();
 
-    // Make sure we succeeded
-    assert!(sess.authenticated());
+    // Ensure authentication succeeded
+    if !sess.authenticated() {
+        return format!("Failed to authenticate to {}", ip);
+    }
 
-    format!("Yay got it")
+    // Open a channel and execute the command
+    let mut channel = sess.channel_session().unwrap();
+    channel.exec(&command).unwrap();
+
+    // Read the output of the command
+    let mut output = String::new();
+    
+    channel.read_to_string(&mut output).unwrap();
+
+    // Close the channel and return the output
+    channel.wait_close().unwrap();
+    let exit_status = channel.exit_status().unwrap();
+
+    format!("Command executed with exit status {}: {}", exit_status, output)
 }
 
 

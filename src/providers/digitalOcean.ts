@@ -146,7 +146,7 @@ const DigitalOcean: DigitalOceanInterface = {
 		const {ip_address} = droplet['networks']['v4'].find(ip =>ip.type === "public");
 
 		console.log(ip_address);
-		invoke("exec_ssh_commands",{ip:ip_address,commands:commands});
+		invoke("exec_ssh_commands",{ip:ip_address,command:commands[0]});
 		return true
 	}
 
