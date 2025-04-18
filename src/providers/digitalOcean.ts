@@ -72,12 +72,12 @@ const DigitalOcean: DigitalOceanInterface = {
 	getDroplets: async function () {
 		const headers = this.buildBasicHeaders();
 		const url = `${this.API_BASE_URL}droplets?page=1`;
-		return fetch(url, {
+		return await fetch(url, {
 			headers: headers,
-		})
-			.then((res) => res.json())
+		}).then((res) => res.json())
 			.then((res) => {
-				if(res.id.toLowerCase() === 'unauthorized'){
+				if(res.id && res.id.toLowerCase() === 'unauthorized'){
+					console.log("corcoso");
 					throw new Error("Unauthorized");
 				}
 				return res.droplets

@@ -46,8 +46,7 @@ const loadSites = async () => {
 			if (DigitalOcean.verifyConfig) {
 				loadedSites = await DigitalOcean.getDroplets().then((res: any) =>{
 					return res.map(DigitalOcean.convertServerToGeneric)
-				}
-				).catch((e)=>{
+				}).catch((e)=>{
 					error.value = true;
 					if(e.message.toLowerCase() === 'unauthorized'){
 						loadedSites = [];
