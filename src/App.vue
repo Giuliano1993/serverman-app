@@ -7,6 +7,7 @@ import ConfigFialog from "./components/ConfigDialog.vue";
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import ServerList from "./components/ServerList/ServerList.vue";
 import MakeNewModal from "./components/MakeNewModal.vue";
+import { invoke } from '@tauri-apps/api/core';
 
 
 const showModal = ref(false);
@@ -18,6 +19,14 @@ const toggleConfigModal = () => {
 };
 const toggleShowCreate = () => {
   showCreate.value = !showCreate.value;
+}
+
+const runHelloWorld = () => {
+  invoke("run_node_hello_world").then(response => {
+    console.log(response);
+  }).catch(error => {
+    console.error("Error running hello world:", error);
+  });
 }
 
 const dockClickActions = (actionName: string) => {
@@ -57,6 +66,9 @@ const menuitems = [
   <Dock position="left" :model="menuitems">
     <template #item="{item}">
       <a @click="dockClickActions(item.label)">
+        <i :class="'pi pi-'+item.icon" style="font-size: 1rem"></i>
+      </a>
+      <a @click="runHelloWorld()">
         <i :class="'pi pi-'+item.icon" style="font-size: 1rem"></i>
       </a>
     </template>
