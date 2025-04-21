@@ -6,6 +6,7 @@ import { Server, Provider } from "../../types.ts";
 import { Provider as ProviderName} from "../../types.ts";
 import DigitalOcean from "../../providers/digitalOcean.ts";
 import Netlify from "../../providers/netlify.ts";
+import { invoke } from "@tauri-apps/api/core";
 
 const confirm = useConfirm();
 const toast = useToast();
@@ -16,6 +17,17 @@ const props = defineProps<{
 	site: Server;
 }>();
 
+const installServer = async () => {
+  const dropletid = props.site.id.toString();
+  const dotoken = import.meta.env.VITE_doAuthToken;
+  const path = import.meta.env.VITE_localKeyFile
+
+  invoke("run_node_ssh_install",{dropletid,dotoken, path}).then(response => {
+    console.log(response);
+  }).catch(error => {
+    console.error("Error running hello world:", error);
+  });
+}
 
 const deleteServer = () => {
     console.log('chiama funzione')
@@ -85,6 +97,7 @@ const deleteServer = () => {
       <div class="flex gap-3 justify-around w-full">
 
         <Button label="Delete" severity="danger" outlined class="" @click="deleteServer" />
+        <Button label="Install Server" class="" @click="installServer" v-if="props.type == Provider.DIGITALOCEAN"/>
         <Button label="Info" class="" />
       </div>
     </div>

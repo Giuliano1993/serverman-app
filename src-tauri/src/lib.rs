@@ -39,16 +39,17 @@ fn exec_ssh_commands(ip: String, command: String) -> String {
 
 
 #[tauri::command]
-fn run_node_hello_world(droplet_id: String, do_token: String, path: String) -> String{
+fn run_node_ssh_install(dropletid: String, dotoken: String, path: String) -> String{
     let output = std::process::Command::new("node")
-        .arg("./src/sshInstall.js")
-        .arg(droplet_id)
-        .arg(do_token)
+        .arg("./src/sshInstall.cjs")
+        .arg(dropletid)
+        .arg(dotoken)
         .arg(path)
         .output()
         .expect("Failed to execute command");
 
     if output.status.success() {
+        
         String::from_utf8_lossy(&output.stdout).to_string()
     } else {
         String::from_utf8_lossy(&output.stderr).to_string()
@@ -90,7 +91,7 @@ pub fn run() {
                 app.handle().plugin(tauri_plugin_stronghold::Builder::with_argon2(&salt_path).build())?;
                 Ok(())
             })
-        .invoke_handler(tauri::generate_handler![exec_ssh_commands, run_node_hello_world])
+        .invoke_handler(tauri::generate_handler![exec_ssh_commands, run_node_ssh_install])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -7,7 +7,7 @@ import ConfigFialog from "./components/ConfigDialog.vue";
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import ServerList from "./components/ServerList/ServerList.vue";
 import MakeNewModal from "./components/MakeNewModal.vue";
-import { invoke } from '@tauri-apps/api/core';
+import { Provider } from './types';
 
 
 const showModal = ref(false);
@@ -21,13 +21,6 @@ const toggleShowCreate = () => {
   showCreate.value = !showCreate.value;
 }
 
-const runHelloWorld = () => {
-  invoke("run_node_hello_world").then(response => {
-    console.log(response);
-  }).catch(error => {
-    console.error("Error running hello world:", error);
-  });
-}
 
 const dockClickActions = (actionName: string) => {
   const action  = actionName.toLowerCase();
@@ -68,17 +61,14 @@ const menuitems = [
       <a @click="dockClickActions(item.label)">
         <i :class="'pi pi-'+item.icon" style="font-size: 1rem"></i>
       </a>
-      <a @click="runHelloWorld()">
-        <i :class="'pi pi-'+item.icon" style="font-size: 1rem"></i>
-      </a>
     </template>
   </Dock>
   <ConfigFialog v-if="showModal"></ConfigFialog>
   <div class="flex flex-row justify-between" id="server-list-container">
-    <ServerList type="Netlify"></ServerList>
-    <ServerList type="Vercel"></ServerList>
-    <ServerList type="digitalocean"></ServerList>
-    <ServerList type="hetzner"></ServerList>
+    <ServerList :type="Provider.NETLIFY"></ServerList>
+    <ServerList :type="Provider.VERCEL"></ServerList>
+    <ServerList :type="Provider.DIGITALOCEAN"></ServerList>
+    <ServerList :type="Provider.HETZNER"></ServerList>
   </div>
   <MakeNewModal v-if="showCreate"></MakeNewModal>
 </template>
