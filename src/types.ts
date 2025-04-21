@@ -3,7 +3,7 @@ interface RequestError extends Error {
 }
 
 export type DeployInstance = {
-	id: number;
+	id: number|string;
 	name?: string;
 };
 
@@ -27,6 +27,7 @@ export interface VercelProject extends StaticSiteInstance {
 export interface Droplet extends Server {
 	id: number|string,
 	status: string,
+	networks: object
 }
 
 export interface HetznerServer extends Server {}
@@ -71,7 +72,7 @@ export interface DigitalOceanInterface extends ProviderInterface {
 	getSshKeys: () => Promise<SSHKey[]>;
 	getSizes: () => Promise<DOSize | Error>;
 	canConnectToDroplet: (dropletId: number,callback: (droplet: Droplet)=>void) => Promise<any>;
-	sshInstallServer:(droplet: Droplet, commands: string[])=>boolean
+	sshInstallServer:(droplet: Droplet, commands: string[])=>boolean,
 }
 
 export interface NetlifyInterface extends ProviderInterface {

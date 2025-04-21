@@ -148,7 +148,7 @@ const DigitalOcean: DigitalOceanInterface = {
 		console.log(ip_address);
 		invoke("exec_ssh_commands",{ip:ip_address,command:commands[0]});
 		return true
-	}
+	},
 
 };
 
