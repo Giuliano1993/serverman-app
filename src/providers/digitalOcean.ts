@@ -12,9 +12,12 @@ const DigitalOcean: DigitalOceanInterface = {
 		};
 	},
 	convertServerToGeneric: (baseServer) => {
+		console.log(baseServer);
 		const s: Server = {
 			id: baseServer.id,
 			name: baseServer.name,
+			ip: baseServer.networks.v4.find((ip: { type: string; ip_address: string; }) => ip.type === "public")?.ip_address,
+			
 		};
 		return s;
 	},

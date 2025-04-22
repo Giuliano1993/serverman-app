@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps,defineEmits } from "vue";
+import { defineProps,defineEmits, onMounted, ref } from "vue";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import { Server, Provider } from "../../types.ts";
@@ -16,7 +16,7 @@ const props = defineProps<{
   type: Provider,
 	site: Server;
 }>();
-
+const is_installed = ref(false);
 const installServer = async () => {
   const dropletid = props.site.id.toString();
   const dotoken = import.meta.env.VITE_doAuthToken;
@@ -29,6 +29,15 @@ const installServer = async () => {
   });
 }
 
+/*onMounted(() => {
+  
+  if(props.type === ProviderName.DIGITALOCEAN){
+    console.log('is digital ocean')
+    fetch(`http://${props.site.ip}`).then((res)=>{
+      console.log(res);
+    })
+  }
+});*/
 const deleteServer = () => {
     console.log('chiama funzione')
     confirm.require({
@@ -92,7 +101,8 @@ const deleteServer = () => {
     </div>
     <div class="flex flex-col gap-3 w-full">
       <div>
-        <p>{{site.name}} ddd</p>
+        <p>{{site.name}}</p>
+        <p v-if="props.type == Provider.DIGITALOCEAN">{{ site.ip }}</p>
       </div>
       <div class="flex gap-3 justify-around w-full">
 
