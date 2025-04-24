@@ -8,6 +8,7 @@ import ConfigFialog from "./components/ConfigDialog.vue";
 import ServerList from "./components/ServerList/ServerList.vue";
 import MakeNewModal from "./components/MakeNewModal.vue";
 import { Provider } from './types';
+import ServerDatatable from './components/ServerDatatable.vue';
 
 
 const showModal = ref(false);
@@ -65,10 +66,11 @@ const menuitems = [
   </Dock>
   <ConfigFialog v-if="showModal"></ConfigFialog>
   <div class="flex flex-row justify-between" id="server-list-container">
-    <ServerList :type="Provider.NETLIFY"></ServerList>
-    <ServerList :type="Provider.VERCEL"></ServerList>
-    <ServerList :type="Provider.DIGITALOCEAN"></ServerList>
-    <ServerList :type="Provider.HETZNER"></ServerList>
+    <ServerDatatable> </ServerDatatable>
+    <!--<ServerList :type="Provider.NETLIFY"></ServerList>-->
+    <!--<ServerList :type="Provider.VERCEL"></ServerList>-->
+    <!--<ServerList :type="Provider.DIGITALOCEAN"></ServerList>-->
+    <!--<ServerList :type="Provider.HETZNER"></ServerList>-->
   </div>
   <MakeNewModal v-if="showCreate"></MakeNewModal>
 </template>
