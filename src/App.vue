@@ -67,10 +67,6 @@ const menuitems = [
   <ConfigFialog v-if="showModal"></ConfigFialog>
   <div class="flex flex-row justify-between" id="server-list-container">
     <ServerDatatable> </ServerDatatable>
-    <!--<ServerList :type="Provider.NETLIFY"></ServerList>-->
-    <!--<ServerList :type="Provider.VERCEL"></ServerList>-->
-    <!--<ServerList :type="Provider.DIGITALOCEAN"></ServerList>-->
-    <!--<ServerList :type="Provider.HETZNER"></ServerList>-->
   </div>
   <MakeNewModal v-if="showCreate"></MakeNewModal>
 </template>

@@ -7,6 +7,8 @@ import { Provider as ProviderName} from "../../types.ts";
 import DigitalOcean from "../../providers/digitalOcean.ts";
 import Netlify from "../../providers/netlify.ts";
 import { invoke } from "@tauri-apps/api/core";
+import TieredMenu from 'primevue/tieredmenu';
+
 
 const confirm = useConfirm();
 const toast = useToast();
@@ -29,15 +31,39 @@ const installServer = async () => {
   });
 }
 
-/*onMounted(() => {
-  
-  if(props.type === ProviderName.DIGITALOCEAN){
-    console.log('is digital ocean')
-    fetch(`http://${props.site.ip}`).then((res)=>{
-      console.log(res);
-    })
+
+const actionItems = ref([
+  {
+    label: "Actions",
+    icon: "pi pi-fw pi-cog",
+    items: [
+      {
+        label: 'Delete',
+        icon: 'pi pi-fw pi-trash',
+        command: () => {
+          deleteServer();
+        }
+      },
+      {
+        label: 'Install',
+        icon: 'pi pi-fw pi-plus',
+        command: () => {
+          installServer();
+        }
+      },
+      {
+        label: 'Info',
+        icon: 'pi pi-fw pi-info-circle',
+        command: () => {
+          console.log('Info clicked');
+        }
+      }
+    ]
   }
-});*/
+]);
+
+
+
 const deleteServer = () => {
     console.log('chiama funzione')
     confirm.require({
@@ -104,12 +130,10 @@ const deleteServer = () => {
         <p>{{site.name}}</p>
         <p v-if="props.type == Provider.DIGITALOCEAN">{{ site.ip }}</p>
       </div>
-      <div class="flex gap-3 justify-around w-full">
-
-        <Button label="Delete" severity="danger" outlined class="" @click="deleteServer" />
-        <Button label="Install Server" class="" @click="installServer" v-if="props.type == Provider.DIGITALOCEAN"/>
-        <Button label="Info" class="" />
-      </div>
+      <div>{{ type }}</div>
+    </div>
+    <div>
+      <TieredMenu :model="actionItems"    />
     </div>
     
   </div>
