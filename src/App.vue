@@ -51,7 +51,7 @@ const toggleShowCreate = () => {
   <div class="flex flex-row justify-between" id="server-list-container">
     <ServerDatatable> </ServerDatatable>
   </div>
-  <MakeNewModal v-if="showCreate"></MakeNewModal>
+  <MakeNewModal v-if="showCreate" @close="showCreate = false"></MakeNewModal>
 </template>
 
 <style scoped>

@@ -28,11 +28,15 @@ const configNext = (data, next) => {
 }
 
 
+const closeModal = () => {
+    emit('close')
+}
 </script>
 
 <template>
   <div class="w-screen h-screen bg-black bg-opacity-90 modal-box">
     <div class="bg-[#2b2d30] rounded-md p-3 modal-body border-green-950 border-solid border-2 w-2/3">
+        <div class=" text-right text-xl cursor-pointer" @click="closeModal"><i class="pi pi-times ml-auto"></i></div>
       <div class="gap-3 justify-around ">
 
         <Stepper value="1" linear>

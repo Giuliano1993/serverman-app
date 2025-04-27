@@ -30,35 +30,39 @@ const installServer = async () => {
     console.error("Error running hello world:", error);
   });
 }
-
-
-const actionItems = ref([
-  {
-    label: "Actions",
-    icon: "pi pi-fw pi-cog",
-    items: [
-      {
-        label: 'Delete',
-        icon: 'pi pi-fw pi-trash',
-        command: () => {
-          deleteServer();
-        }
-      },
-      {
-        label: 'Install',
-        icon: 'pi pi-fw pi-plus',
-        command: () => {
-          installServer();
-        }
-      },
-      {
+const actions = [
+   {
         label: 'Info',
         icon: 'pi pi-fw pi-info-circle',
         command: () => {
           console.log('Info clicked');
         }
       }
-    ]
+];
+if(props.type.toLocaleLowerCase() === ProviderName.DIGITALOCEAN.toLocaleLowerCase()){
+  actions.push({
+    label: 'Install',
+    icon: 'pi pi-fw pi-plus',
+    command: () => {
+      installServer();
+    }
+  })
+}
+actions.push({
+  label: 'Delete',
+  icon: 'pi pi-fw pi-trash',
+  command: () => {
+    deleteServer();
+  }
+});
+
+
+
+const actionItems = ref([
+  {
+    label: "Actions",
+    icon: "pi pi-fw pi-cog",
+    items: actions
   }
 ]);
 

@@ -124,7 +124,7 @@ watch(selectedProvider, (newValue) => {
 </script>
 <template>
     <div class="flex flex-col gap-4 p-4 w-full">
-        <div class="flex">
+        <div class="flex gap-3">
             <IconField>
                 <InputIcon class="pi pi-search" />
                 <InputText v-model="search" placeholder="Search"/>
