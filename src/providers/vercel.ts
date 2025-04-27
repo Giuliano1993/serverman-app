@@ -21,7 +21,7 @@ const Vercel: VercelInterface = {
 		return s;
 	},
 	projectList: async function () {
-		const sites = await fetch(this.API_BASE_URL + "projects", {
+		const sites = await fetch(`${this.API_BASE_URL}projects`, {
 			headers: this.buildBasicHeaders(),
 			method: "GET",
 		})
@@ -34,7 +34,7 @@ const Vercel: VercelInterface = {
 		return sites;
 	},
 	deleteApp: async function (id) {
-		return await fetch(this.API_BASE_URL + `projects/${id}`, {
+		return await fetch(`${this.API_BASE_URL}projects/${id}`, {
 			headers: this.buildBasicHeaders(),
 			method: "delete",
 		})
