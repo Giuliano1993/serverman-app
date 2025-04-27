@@ -55,7 +55,7 @@ const closeModal = () => {
                       </div>
                   </div>
                   <div class="flex pt-6 justify-end">
-                      <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="activateCallback('2')" />
+                      <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="activateCallback(selectedProvider ==  'digitalocean' ? '2' : '4')" />
                   </div>
               </StepPanel>
               <StepPanel v-slot="{ activateCallback }" value="2" v-if="selectedProvider == 'digitalocean' || selectedProvider == 'hetzner'">
