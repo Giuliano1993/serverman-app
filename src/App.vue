@@ -5,8 +5,10 @@ import { ref } from "vue";
 import ConfigFialog from "./components/ConfigDialog.vue";
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import ServerList from "./components/ServerList/ServerList.vue";
 import MakeNewModal from "./components/MakeNewModal.vue";
+
+
+
 import { Provider } from './types';
 import ServerDatatable from './components/ServerDatatable.vue';
 
@@ -23,48 +25,29 @@ const toggleShowCreate = () => {
 }
 
 
-const dockClickActions = (actionName: string) => {
-  const action  = actionName.toLowerCase();
-  switch (action) {
-    case "new":
-      toggleShowCreate()
-      break;
-    case "config":
-      toggleConfigModal();
-      break;
-    case "search":
-      break;
-    default:
 
-  }
-
-}
-
-const menuitems = [
-  {
-    label: "New",
-    icon:  "plus"
-  },{
-    label: "Config",
-    icon:  "cog"
-  },{
-    label: "Search",
-    icon:  "search"
-  },
-]
 </script>
 
 <template>
   <Toast/>
   <ConfirmDialog></ConfirmDialog>
-  <Dock position="left" :model="menuitems">
-    <template #item="{item}">
-      <a @click="dockClickActions(item.label)">
-        <i :class="'pi pi-'+item.icon" style="font-size: 1rem"></i>
-      </a>
-    </template>
-  </Dock>
   <ConfigFialog v-if="showModal"></ConfigFialog>
+  <div class="flex flex-row justify-between" >
+    <h1>    
+      <i class="pi pi-server"></i>
+      Server List
+    </h1>
+    <div class=" flex gap-2">
+      <Button @click="toggleShowCreate" class="p-button-success p-button-outlined">
+        <i class="pi pi-plus"></i>
+        New Server
+      </Button>
+      <Button @click="toggleConfigModal" class="p-button-success p-button-outlined">
+        <i class="pi pi-cog"></i>
+        Settings
+      </Button>
+    </div>
+  </div>
   <div class="flex flex-row justify-between" id="server-list-container">
     <ServerDatatable> </ServerDatatable>
   </div>
@@ -92,11 +75,5 @@ const menuitems = [
   background-color: #2b2d30;
 }
 
-.p-dock{
-  z-index: 9999999999;
-}
-#server-list-container {
-  margin-left: 4.5em;
-}
 
 </style>
