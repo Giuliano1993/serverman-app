@@ -33,17 +33,19 @@ const Vercel: VercelInterface = {
 
 		return sites;
 	},
-	deleteApp: async function (project) {
-		return await fetch(this.API_BASE_URL + `projects/${project.id}`, {
+	deleteApp: async function (id) {
+		return await fetch(this.API_BASE_URL + `projects/${id}`, {
 			headers: this.buildBasicHeaders(),
 			method: "delete",
 		})
 			.then((response) => {
+				console.log(response);
 				if (response.status === 204) {
 					return true;
 				}
 			})
 			.catch((err) => {
+				console.log(err);
 				return false;
 			});
 	},

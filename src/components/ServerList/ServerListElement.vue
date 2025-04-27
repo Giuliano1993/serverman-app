@@ -8,6 +8,7 @@ import DigitalOcean from "../../providers/digitalOcean.ts";
 import Netlify from "../../providers/netlify.ts";
 import { invoke } from "@tauri-apps/api/core";
 import TieredMenu from 'primevue/tieredmenu';
+import Vercel from "../../providers/vercel.ts";
 
 
 const confirm = useConfirm();
@@ -96,8 +97,15 @@ const deleteServer = () => {
                   }
                 }
                 break;
-              case ProviderName.VERCEL.toLocaleLowerCase():
-                //Vercel.deleteProject(site.id);
+              case ProviderName.VERCEL.toLocaleLowerCase():{
+                  const deleteResponse = await Vercel.deleteApp(props.site.id)
+                  if(deleteResponse){
+                    toast.add({ severity: 'success', summary: 'Success', detail: 'Server deleted', life: 3000 });
+                    emit('deletedServer');
+                  }else{
+                    toast.add({ severity: 'error', summary: 'Rejected', detail: 'Something went wrong try afain later', life: 3000 });
+                  }
+                }
                 break;
               case ProviderName.DIGITALOCEAN.toLocaleLowerCase(): {
                 const responseCode = await DigitalOcean.deleteDroplet(props.site.id);
