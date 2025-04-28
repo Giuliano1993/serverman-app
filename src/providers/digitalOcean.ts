@@ -99,7 +99,6 @@ const DigitalOcean: DigitalOceanInterface = {
 				const distros = res.filter(
 					(distro: any) => distro.status === "available",
 				);
-				console.log(distros);
 				if (filter === "") return distros;
 				return distros.filter((distro: any) =>
 					distro.title.includes(filter),
