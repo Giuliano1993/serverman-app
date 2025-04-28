@@ -8,7 +8,9 @@ const emit = defineEmits(['prev','next'])
 
 
 const images = await DigitalOcean.getDistributions().then( res => res.map( d => ({label: `${d.distribution}: ${d.name}`, value: d.id})));
-const sizes = await DigitalOcean.getSizes().then( res => res.map( s => ({label: s.slug, value: s.slug})));
+const sizes = await DigitalOcean.getSizes().then( res => res.map( s => ({label: `${s.vcpus} vCPUs, ${s.memory} GB RAM (${s.price_monthly}$/month)`,
+  value: s.slug
+})));
 const regions = await DigitalOcean.getRegions().then( res => res.map( r => ({label: r.name, value: r.slug})));
 
 console.log(images)
