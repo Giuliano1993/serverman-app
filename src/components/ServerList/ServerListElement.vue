@@ -6,31 +6,23 @@ import { Server, Provider } from "../../types.ts";
 import { Provider as ProviderName} from "../../types.ts";
 import DigitalOcean from "../../providers/digitalOcean.ts";
 import Netlify from "../../providers/netlify.ts";
-import { invoke } from "@tauri-apps/api/core";
+
 import TieredMenu from 'primevue/tieredmenu';
 import Vercel from "../../providers/vercel.ts";
+import InstallServer from "../NewInstanceSetup/DigitalOcean/InstallServer.vue";
 
 
 const confirm = useConfirm();
 const toast = useToast();
 const emit = defineEmits(['deletedServer']);
+const showInstall = ref(false);
 
 const props = defineProps<{
   type: Provider,
 	site: Server;
 }>();
 const is_installed = ref(false);
-const installServer = async () => {
-  const dropletid = props.site.id.toString();
-  const dotoken = import.meta.env.VITE_doAuthToken;
-  const path = import.meta.env.VITE_localKeyFile
 
-  invoke("run_node_ssh_install",{dropletid,dotoken, path}).then(response => {
-    console.log(response);
-  }).catch(error => {
-    console.error("Error running hello world:", error);
-  });
-}
 const actions = [
    {
         label: 'Info',
@@ -40,12 +32,12 @@ const actions = [
         }
       }
 ];
-if(props.type.toLocaleLowerCase() === ProviderName.DIGITALOCEAN.toLocaleLowerCase()){
+if(props.type.toLowerCase() === ProviderName.DIGITALOCEAN.toLowerCase()){
   actions.push({
     label: 'Install',
     icon: 'pi pi-fw pi-plus',
     command: () => {
-      installServer();
+      showInstall.value = true;
     }
   })
 }
@@ -149,7 +141,10 @@ const deleteServer = () => {
     </div>
     
   </div>
+  <InstallServer v-if="showInstall" :dropletId="site.id" ></InstallServer>
 </template>
+
+
 
 <style scoped>
 </style>

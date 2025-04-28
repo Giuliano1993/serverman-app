@@ -4,6 +4,7 @@ import { ref, onMounted, watch } from 'vue';
 import Github from "../../../gitProviders/github.ts";
 import DigitalOcean from "../../../providers/digitalOcean.ts";
 import { buildInstallServerScript } from '../../../utils/server.ts';
+import { invoke } from "@tauri-apps/api/core";
 
 const props = defineProps<{
   dropletId : string|integer
@@ -14,6 +15,24 @@ enum WebServer{
     APACHE= "Apache",
     NGINX = "Nginx"
 }
+const installServer = async (opts: any) => {
+  
+  const dotoken = import.meta.env.VITE_doAuthToken;
+  const path = import.meta.env.VITE_localKeyFile
+  const optsToCommandArray = buildInstallServerScript(opts)
+  invoke("run_node_ssh_install",{ 
+    dropletid: props.dropletId,
+    dotoken, 
+    path,
+    opts
+  }).then(response => {
+    console.log(response);
+  }).catch(error => {
+    console.error("Error running hello world:", error);
+  });
+}
+
+const isLoading: Ref<boolean> = ref(false)
 
 const uploadRepo: Ref<boolean> = ref(false)
 const installPhp: Ref<boolean> = ref(true)
@@ -29,14 +48,19 @@ const repositoryChoices: Ref<any[]> = ref([])
 const chosenRepo = ref(null)
 
 onMounted(async ()=>{
-  const repos = await Github.repoList();
-  repositoryChoices.value = repos.map((repo: any) => {
-    return {
-      value: repo.id,
-      label: repo.name,
-    }
-  })
-  console.log(repos);
+  try{
+    const repos = await Github.repoList();
+    console.log(repos)
+    repositoryChoices.value = repos.map((repo: any) => {
+      return {
+        value: repo.id,
+        label: repo.name,
+      }
+    })
+    console.log(repos);
+  }catch (error) {
+    console.error(error);
+  }
 });
 
 const configureServer = ()=>{
@@ -54,19 +78,24 @@ const configureServer = ()=>{
       installWebServer : installWebServer.value,
       chosenRepo : chosenRepo.value
     }
-    const commands = buildInstallServerScript(opts)
-    DigitalOcean.sshInstallServer(d, commands)
+    console.log(d);
+    console.log(opts);
+    installServer(opts);
+
+    /*const commands = buildInstallServerScript(opts)
+    DigitalOcean.sshInstallServer(d, commands)*/
   })
 
-  emit('next',{})
+
 }
 
 
 </script>
 
 <template>
+<div class="w-[100vw] h-[100vh] absolute top-0 left-0 bg-black bg-opacity-55 flex flex-col justify-center items-center" >
 
-  <div class="flex flex-col p-5" >
+  <div class="flex flex-col p-5 bg-slate-600 border-gray-500 rounded-md bg-opacity-100" >
       <div class=" bg-surface-50 dark:bg-surface-950  justify-center items-center font-medium" v-if="!isLoading">
         <div class="grid grid-cols-3 gap-2">
           <div class="col-span-3 text-center py-3">
@@ -117,7 +146,9 @@ const configureServer = ()=>{
             <Checkbox class="mr-3" name="installMySql" inputId="installMySql" v-model="installMySql" binary/>
             <label for="installMySql">Install MySql</label>
           </div>
-
+          <div class="w-[100%] grow">
+            <Button class="p-button-success p-button-outlined" @click="configureServer">Configure Server</Button>
+          </div>
         </div>
       </div>
       <div v-else class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium">
@@ -126,11 +157,10 @@ const configureServer = ()=>{
             <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
         </span>
       </div>
-  </div>
-  <div class="flex pt-6 justify-between">
-      <Button label="Back" severity="secondary" icon="pi pi-arrow-left" @click="emit('prev')" />
-      <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="configureServer" />
-  </div>
+  
+    </div>
+</div>
+  
   
       
     
