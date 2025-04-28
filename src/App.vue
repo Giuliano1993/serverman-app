@@ -32,10 +32,10 @@ const toggleShowCreate = () => {
   <Toast/>
   <ConfirmDialog></ConfirmDialog>
   <ConfigFialog v-if="showModal"></ConfigFialog>
-  <div class="flex flex-row justify-between" >
+  <div class="flex flex-row justify-between p-3" >
     <h1>    
       <i class="pi pi-server"></i>
-      Server List
+      Server-Man
     </h1>
     <div class=" flex gap-2">
       <Button @click="toggleShowCreate" class="p-button-success p-button-outlined">
