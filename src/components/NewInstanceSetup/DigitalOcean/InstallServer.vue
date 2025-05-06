@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import Checkbox from 'primevue/checkbox';
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
+import type { Ref } from 'vue';
 import Github from "../../../gitProviders/github.ts";
 import DigitalOcean from "../../../providers/digitalOcean.ts";
 import { buildInstallServerScript } from '../../../utils/server.ts';
 import { invoke } from "@tauri-apps/api/core";
 
 const props = defineProps<{
-  dropletId : string|integer
+  dropletId : string|number
 }>()
 const emit = defineEmits(['prev','next'])
 
@@ -21,10 +22,10 @@ const installServer = async (opts: any) => {
   const path = import.meta.env.VITE_localKeyFile
   const optsToCommandArray = buildInstallServerScript(opts)
   invoke("run_node_ssh_install",{ 
-    dropletid: props.dropletId,
+    dropletid: props.dropletId.toString(),
     dotoken, 
-    path,
-    opts
+    path/*,
+    opts*/
   }).then(response => {
     console.log(response);
   }).catch(error => {
@@ -43,15 +44,15 @@ const installDocker: Ref<boolean> = ref(false)
 const installMySql: Ref<boolean> = ref(false)
 const installCoolify: Ref<boolean> = ref(false)
 const installWebServer: Ref<boolean> = ref(true);
-const chosenWebServer: Ref<boolean> = ref('');
-const repositoryChoices: Ref<any[]> = ref([])
+const chosenWebServer: Ref<string> = ref('');
+const repositoryChoices: Ref<unknown[]> = ref([])
 const chosenRepo = ref(null)
 
 onMounted(async ()=>{
   try{
     const repos = await Github.repoList();
     console.log(repos)
-    repositoryChoices.value = repos.map((repo: any) => {
+    repositoryChoices.value = repos.map((repo: unknown) => {
       return {
         value: repo.id,
         label: repo.name,
@@ -64,7 +65,9 @@ onMounted(async ()=>{
 });
 
 const configureServer = ()=>{
-  DigitalOcean.canConnectToDroplet(props.dropletId, (d)=>{
+  let { dropletId }  = props;
+  dropletId = typeof dropletId === 'string' ?  Number.parseInt(dropletId) : dropletId;
+  DigitalOcean.canConnectToDroplet(dropletId, (d)=>{
     const opts = {
       webServerType : chosenWebServer.value,
       uploadRepo : uploadRepo.value,
@@ -78,8 +81,6 @@ const configureServer = ()=>{
       installWebServer : installWebServer.value,
       chosenRepo : chosenRepo.value
     }
-    console.log(d);
-    console.log(opts);
     installServer(opts);
 
     /*const commands = buildInstallServerScript(opts)
